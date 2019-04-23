@@ -1,4 +1,4 @@
-# Hyper C++
+# Hyper C++ (aka EZC or easyC)
 
 ## An assortment of algorithms that'll get you hyper about C++
 
