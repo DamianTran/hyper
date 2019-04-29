@@ -75,6 +75,8 @@ bool Spider::go_to(const string& URL)
             }
 
             bCached = true;
+
+            break;
         }
     }
 

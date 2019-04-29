@@ -25,6 +25,8 @@
 #include "EZC/toolkit/string.hpp"
 #include "EZC/toolkit/string_search.hpp"
 
+#include <fstream>
+
 using namespace std;
 
 namespace EZC
@@ -100,6 +102,10 @@ bool HTML_NOCONTENT(const char* text_ptr)
         string itemType = string("</") + HTML_CLASS(text_ptr) + ">";
 
         text_ptr += HTML_FORWARD(text_ptr);
+        if(ptr_at_string(text_ptr - 2, "/>"))
+        {
+            return true;
+        }
 
         while(*text_ptr)
         {
@@ -207,7 +213,7 @@ string HTML_CLASS(const char* text_ptr)
     if(HTML_BEGIN(text_ptr))
     {
         const char* c = ++text_ptr;
-        while(*text_ptr && (*text_ptr != ' ') && (*text_ptr != '>')) ++text_ptr;
+        while(*text_ptr && (!isCharType(*text_ptr, " \t\n\r") && (*text_ptr != '>'))) ++text_ptr;
 
         output.assign(c, text_ptr);
         trim(output, "\t\r\n ");
@@ -326,7 +332,7 @@ void get_HTML_attributes(const char* text_ptr,
 
             // Skip the class ID
 
-            while(*text_ptr != ' ')
+            while(!isCharType(*(text_ptr), " \r\t\n"))
             {
                 if(*text_ptr == '>')
                 {
@@ -492,6 +498,7 @@ bool HTML_tree::read_text(const char* text)
 
     bool bBracket = false;
     bool bNoContent = true;
+    bool bJSParse = false;
 
     string subBuf;
 
@@ -528,18 +535,26 @@ bool HTML_tree::read_text(const char* text)
                 beginIdx = i;
                 i += HTML_FORWARD(&text[i]);
 
-                for(size_t j = i; j < L; ++j)
-                {
-                    if(text[j] == '<')
-                    {
-                        bNoContent = false;
-                    }
-                }
+//                for(size_t j = i; j < L; ++j)
+//                {
+//                    if(text[j] == '<')
+//                    {
+//                        bNoContent = false;
+//                    }
+//                }
 
                 if(bNoContent)
                 {
                     get_HTML_attributes(&text[beginIdx], attributes);
                     itemClass = HTML_CLASS(&text[beginIdx]);
+
+                    while(isCharType(text[i], " \t\r\n")) ++i;
+
+                    if(ptr_at_string(&text[i], ("</" + itemClass + ">").c_str()))
+                    {
+                        i += HTML_FORWARD((&text[i]));
+                    }
+
                     bNoContentType = true;
                 }
                 else
@@ -552,8 +567,14 @@ bool HTML_tree::read_text(const char* text)
 
             }
         }
-        else if(HTML_BEGIN(&text[i]))
+        else if(!bJSParse && HTML_BEGIN(&text[i]))
         {
+
+            if(ptr_at_string(&text[i], "<script", true))
+            {
+                bJSParse = true;
+            }
+
             if(!level)
             {
                 beginIdx = i + HTML_FORWARD(&text[i]);
@@ -567,9 +588,11 @@ bool HTML_tree::read_text(const char* text)
             ++level;
             i += HTML_FORWARD(&text[i]);
         }
-        else if(HTML_END(&text[i]))
+        else if((!bJSParse && HTML_END(&text[i])) ||
+                (bJSParse && ptr_at_string(&text[i], "</script>", true)))
         {
             --level;
+
             if(!level && (beginIdx != UINT_MAX) && (i != beginIdx))
             {
                 string newContent;
@@ -585,6 +608,8 @@ bool HTML_tree::read_text(const char* text)
             }
 
             i += HTML_FORWARD(&text[i]);
+
+            bJSParse = false;
         }
         else ++i;
     }
