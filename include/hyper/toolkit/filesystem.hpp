@@ -20,13 +20,8 @@
 
 #pragma once
 
-<<<<<<< HEAD
-#ifndef HYPER_FILESYSTEM
-#define HYPER_FILESYSTEM
-=======
 #ifndef EZ_FILESYSTEM
 #define EZ_FILESYSTEM
->>>>>>> 3b0c32ddfb16be28933e555771349a1bbaf00268
 
 #include <boost/filesystem.hpp>
 
@@ -48,21 +43,12 @@
 
 #include "hyper/toolkit/string.hpp"
 
-<<<<<<< HEAD
-namespace hyperC
-=======
 namespace hyper
->>>>>>> 3b0c32ddfb16be28933e555771349a1bbaf00268
 {
 
 typedef std::vector<boost::filesystem::path> PathList;
 typedef boost::filesystem::directory_iterator DIR_ITERATOR;
 
-<<<<<<< HEAD
-std::string getUserDataPath();
-
-=======
->>>>>>> 3b0c32ddfb16be28933e555771349a1bbaf00268
 boost::filesystem::path base_directory(const boost::filesystem::path& path);
 
 bool getPathListNames(const PathList& input, std::vector<std::string>& output);
@@ -135,11 +121,7 @@ inline void fwrite(const bool& data, FILE* outFILE)             { fwrite(&data, 
 inline void fwrite(const char* data, FILE* outFILE)
 {
     size_t L = strlen(data);
-<<<<<<< HEAD
-    fwrite(L, outFILE);
-=======
     fwrite(&L, 1, sizeof(L), outFILE);
->>>>>>> 3b0c32ddfb16be28933e555771349a1bbaf00268
     fwrite(data, L, sizeof(char), outFILE);
 }
 
@@ -191,11 +173,7 @@ inline void fread(bool& data, FILE* inFILE)             { fread(&data, 1, sizeof
 inline void fread(char* data, FILE* inFILE)
 {
     size_t L;
-<<<<<<< HEAD
-    fread(L, inFILE);
-=======
     fread(&L, 1, sizeof(L), inFILE);
->>>>>>> 3b0c32ddfb16be28933e555771349a1bbaf00268
     data = new char[L + 1];
     data[L] = '\0';
     fread(data, L, sizeof(char), inFILE);
@@ -204,11 +182,7 @@ inline void fread(char* data, FILE* inFILE)
 inline void fread(std::string& data, FILE* inFILE)
 {
     size_t L;
-<<<<<<< HEAD
-    fread(L, inFILE);
-=======
     fread(&L, 1, sizeof(L), inFILE);
->>>>>>> 3b0c32ddfb16be28933e555771349a1bbaf00268
     char* newstr = new char[L + 1];
     newstr[L] = '\0';
     fread(newstr, L, sizeof(char), inFILE);
@@ -257,8 +231,4 @@ void mread(map_t<key_t, single_t>& list, FILE* inFILE)
 }
 
 }
-<<<<<<< HEAD
-#endif // HYPER_FILESYSTEM
-=======
 #endif // EZ_FILESYSTEM
->>>>>>> 3b0c32ddfb16be28933e555771349a1bbaf00268

@@ -31,11 +31,7 @@
 #include "hyper/toolkit/clustered_vector.hpp"
 #include "hyper/toolkit/string.hpp"
 
-<<<<<<< HEAD
-namespace hyperC
-=======
 namespace hyper
->>>>>>> 3b0c32ddfb16be28933e555771349a1bbaf00268
 {
 
 template<class string_container_t, typename string_t>

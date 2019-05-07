@@ -36,11 +36,7 @@
 
 /////////////////////////////////////////////////////////////////////////////
 
-<<<<<<< HEAD
-namespace hyperC
-=======
 namespace hyper
->>>>>>> 3b0c32ddfb16be28933e555771349a1bbaf00268
 {
 
 template<class key_t, class container_t, typename value_type>
@@ -84,13 +80,8 @@ public:
     }
 
     template<typename key_vector_t>
-<<<<<<< HEAD
-    get_values(const key_vector_t& keys,
-               std::vector<value_type>& output) const
-=======
     bool get_values(const key_vector_t& keys,
                     std::vector<value_type>& output) const
->>>>>>> 3b0c32ddfb16be28933e555771349a1bbaf00268
     {
         output.clear();
 

@@ -1,27 +1,15 @@
 #pragma once
 
-<<<<<<< HEAD
-#ifndef HYPER_STATIC_VECTOR
-#define HYPER_STATIC_VECTOR
-=======
 #ifndef hyper_STATIC_VECTOR
 #define hyper_STATIC_VECTOR
->>>>>>> 3b0c32ddfb16be28933e555771349a1bbaf00268
 
 #include <vector>
 #include <iostream>
 
-<<<<<<< HEAD
-namespace hyperC
+namespace hyper
 {
 
 /** Iterator class for static vector container */
-=======
-namespace hyperC
-{
-
-/** Iterator class for static vector container */
->>>>>>> 3b0c32ddfb16be28933e555771349a1bbaf00268
 
 template<typename T>
 class ptr_iterator : public std::iterator<std::random_access_iterator_tag,
@@ -142,13 +130,6 @@ public:
             delete(*(this->data() + i));
         }
     }
-<<<<<<< HEAD
-
-    typedef ptr_iterator<value_type>                         iterator;
-    typedef ptr_iterator<const value_type>                   const_iterator;
-    typedef ptr_reverse_iterator<value_type>                 reverse_iterator;
-    typedef ptr_reverse_iterator<const value_type>           const_reverse_iterator;
-=======
 
     #ifdef __APPLE__
 
@@ -279,7 +260,6 @@ public:
     typedef ptr_reverse_iterator<value_type>                 reverse_iterator;
     typedef ptr_reverse_iterator<const value_type>           const_reverse_iterator;
     #endif
->>>>>>> 3b0c32ddfb16be28933e555771349a1bbaf00268
 
     iterator                        begin()             { return iterator(this->data()); }
     const_iterator                  begin()       const { return const_iterator(this->data()); }
@@ -332,12 +312,6 @@ public:
     }
 
     template<typename o_value_type>
-<<<<<<< HEAD
-    inline void insert(const ptr_iterator<value_type>& position, o_value_type& val)
-    {
-
-        int dist = std::distance(position.getPtr(), rbegin().getPtr()) + 1;
-=======
     inline void insert(const iterator& position, o_value_type& val)
     {
         #ifdef __APPLE__
@@ -345,7 +319,6 @@ public:
         #else
         int dist = std::distance(position.getPtr(), rbegin().getPtr()) + 1;
         #endif
->>>>>>> 3b0c32ddfb16be28933e555771349a1bbaf00268
 
         this->emplace_back(this->back());
         ptr_reverse_iterator<value_type> it = rbegin();
@@ -359,12 +332,6 @@ public:
 
     }
 
-<<<<<<< HEAD
-    inline void erase(const ptr_iterator<value_type>& position)
-    {
-        delete(*position.getPtr());
-        std::vector<value_type*>::erase(std::vector<value_type*>::begin() + std::distance(begin(), position));
-=======
     inline void erase(const iterator& position)
     {
         delete(*position.getPtr());
@@ -373,7 +340,6 @@ public:
         #else
         std::vector<value_type*>::erase(std::vector<value_type*>::begin() + std::distance(begin(), position));
         #endif
->>>>>>> 3b0c32ddfb16be28933e555771349a1bbaf00268
     }
 
     inline void clear()
@@ -389,8 +355,4 @@ public:
 
 }
 
-<<<<<<< HEAD
-#endif // HYPER_STATIC_VECTOR
-=======
 #endif // hyper_STATIC_VECTOR
->>>>>>> 3b0c32ddfb16be28933e555771349a1bbaf00268

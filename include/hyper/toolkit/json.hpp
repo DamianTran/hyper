@@ -27,11 +27,7 @@
 #include <vector>
 #include <map>
 
-<<<<<<< HEAD
-namespace hyperC
-=======
 namespace hyper
->>>>>>> 3b0c32ddfb16be28933e555771349a1bbaf00268
 {
 
 void get_JSON_name_type(const std::string& filename,
