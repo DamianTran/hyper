@@ -24,7 +24,7 @@
 
 using namespace std;
 
-namespace hyper
+namespace hyperC
 {
 
 bool ptr_at_string(const char* ptr, const char* query,

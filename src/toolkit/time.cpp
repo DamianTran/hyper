@@ -6,7 +6,7 @@
 
 using namespace std;
 
-namespace hyper
+namespace hyperC
 {
 
 string day_of_week(const TimePoint& time)

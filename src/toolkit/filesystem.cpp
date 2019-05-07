@@ -33,7 +33,7 @@
 namespace fs = boost::filesystem;
 using namespace std;
 
-namespace hyper
+namespace hyperC
 {
 
 fs::path base_directory(const fs::path& path)

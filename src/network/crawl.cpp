@@ -19,7 +19,7 @@
 namespace fs = boost::filesystem;
 using namespace std;
 
-namespace hyper
+namespace hyperC
 {
 
 Spider::Spider():

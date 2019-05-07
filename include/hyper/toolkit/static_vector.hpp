@@ -17,7 +17,7 @@ namespace hyperC
 
 /** Iterator class for static vector container */
 =======
-namespace hyper
+namespace hyperC
 {
 
 /** Iterator class for static vector container */

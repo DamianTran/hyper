@@ -1,6 +1,6 @@
 #include "hyper/toolkit/console.hpp"
 
-namespace hyper
+namespace hyperC
 {
 
 void clear_console(char fill)
