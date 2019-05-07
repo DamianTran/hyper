@@ -24,12 +24,19 @@
 #include "hyper/toolkit/charsurf.hpp"
 #include "hyper/toolkit/string.hpp"
 #include "hyper/toolkit/string_search.hpp"
+<<<<<<< HEAD
 
 #include <fstream>
 
 using namespace std;
 
 namespace hyperC
+=======
+
+using namespace std;
+
+namespace hyper
+>>>>>>> a2aca39971b964f2fe0f560682673f2341f2e7a9
 {
 
 HTML_tree::HTML_tree(const char* str, const size_t& level):

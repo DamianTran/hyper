@@ -26,7 +26,11 @@
 
 using namespace std;
 
+<<<<<<< HEAD
 namespace hyperC
+=======
+namespace hyper
+>>>>>>> a2aca39971b964f2fe0f560682673f2341f2e7a9
 {
 
 void trimSpaces(string& tag)

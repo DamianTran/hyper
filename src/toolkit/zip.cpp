@@ -41,7 +41,11 @@
 
 using namespace boost::filesystem;
 
+<<<<<<< HEAD
 namespace hyperC
+=======
+namespace hyper
+>>>>>>> a2aca39971b964f2fe0f560682673f2341f2e7a9
 {
 
 const static size_t zip_inflate_buf_size = 16384;

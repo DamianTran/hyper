@@ -4,7 +4,11 @@
 
 using namespace std;
 
+<<<<<<< HEAD
 namespace hyperC
+=======
+namespace hyper
+>>>>>>> a2aca39971b964f2fe0f560682673f2341f2e7a9
 {
 
 _1Dstream::_1Dstream(const _2Dstream& dataset, const unsigned int& index, const bool& row):
@@ -457,7 +461,11 @@ _2Dstream::_2Dstream(const _2Dstream& other):
 
     if(other.search_index)
     {
+<<<<<<< HEAD
         search_index = new hyperC::tree_vector<char, coord_string>(*other.search_index);
+=======
+        search_index = new hyper::tree_vector<char, coord_string>(*other.search_index);
+>>>>>>> a2aca39971b964f2fe0f560682673f2341f2e7a9
     }
     else
     {
@@ -507,7 +515,11 @@ _2Dstream& _2Dstream::operator=(const _2Dstream& other)
 
     if(other.search_index)
     {
+<<<<<<< HEAD
         search_index = new hyperC::tree_vector<char, coord_string>(*other.search_index);
+=======
+        search_index = new hyper::tree_vector<char, coord_string>(*other.search_index);
+>>>>>>> a2aca39971b964f2fe0f560682673f2341f2e7a9
     }
     else
     {

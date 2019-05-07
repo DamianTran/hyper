@@ -20,7 +20,10 @@
 
 #include "hyper/toolkit/filesystem.hpp"
 #include "hyper/toolkit/data_stream.hpp"
+<<<<<<< HEAD
 #include "hyper/toolkit/string.hpp"
+=======
+>>>>>>> a2aca39971b964f2fe0f560682673f2341f2e7a9
 
 #include "hyper/algorithm.hpp"
 
@@ -35,7 +38,11 @@
 namespace fs = boost::filesystem;
 using namespace std;
 
+<<<<<<< HEAD
 namespace hyperC
+=======
+namespace hyper
+>>>>>>> a2aca39971b964f2fe0f560682673f2341f2e7a9
 {
 
 string getUserDataPath()

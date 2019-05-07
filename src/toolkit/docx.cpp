@@ -45,7 +45,11 @@
 using namespace std;
 using namespace boost::filesystem;
 namespace pt = boost::property_tree;
+<<<<<<< HEAD
 using namespace hyperC;
+=======
+using namespace hyper;
+>>>>>>> a2aca39971b964f2fe0f560682673f2341f2e7a9
 
 bool getDocumentBody(string& output, const string& filename)
 {

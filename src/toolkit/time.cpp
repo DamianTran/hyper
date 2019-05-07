@@ -6,7 +6,11 @@
 
 using namespace std;
 
+<<<<<<< HEAD
 namespace hyperC
+=======
+namespace hyper
+>>>>>>> a2aca39971b964f2fe0f560682673f2341f2e7a9
 {
 
 string day_of_week(const TimePoint& time)
@@ -120,7 +124,11 @@ string monthStr(const unsigned int& monthInt)
 int monthInt(const string& month)
 {
 
+<<<<<<< HEAD
     unsigned int output = hyperC::getMatchingIndex(month, calendar_months, CMP_STR_CASE_INSENSITIVE |
+=======
+    unsigned int output = hyper::getMatchingIndex(month, calendar_months, CMP_STR_CASE_INSENSITIVE |
+>>>>>>> a2aca39971b964f2fe0f560682673f2341f2e7a9
                                                                         CMP_STR_SIZE_INSENSITIVE |
                                                                         CMP_STR_SW);
     if(output == UINT_MAX) return 0;
@@ -690,8 +698,13 @@ void TimePoint::getTimeNow()
     ostringstream oss;
     oss << put_time(&tm, "20%y %m %d %H %M %S");
 
+<<<<<<< HEAD
     hyperC::StringVector timeStr;
     hyperC::splitString(oss.str(), timeStr, " ");
+=======
+    hyper::StringVector timeStr;
+    hyper::splitString(oss.str(), timeStr, " ");
+>>>>>>> a2aca39971b964f2fe0f560682673f2341f2e7a9
 
     for(auto str : timeStr)
     {
