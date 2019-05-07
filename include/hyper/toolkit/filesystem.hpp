@@ -43,7 +43,7 @@
 
 #include "hyper/toolkit/string.hpp"
 
-namespace hyper
+namespace hyperC
 {
 
 typedef std::vector<boost::filesystem::path> PathList;

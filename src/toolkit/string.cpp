@@ -26,7 +26,7 @@
 
 using namespace std;
 
-namespace hyper
+namespace hyperC
 {
 
 void trimSpaces(string& tag)

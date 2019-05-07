@@ -4,7 +4,7 @@
 
 using namespace std;
 
-namespace hyper
+namespace hyperC
 {
 
 _1Dstream::_1Dstream(const _2Dstream& dataset, const unsigned int& index, const bool& row):

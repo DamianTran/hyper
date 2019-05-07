@@ -30,7 +30,7 @@
 
 #define DURATION(t0, t1)                std::chrono::duration<float>(t1 - t0).count()
 
-namespace hyper{
+namespace hyperC{
 
 // Time scales used for calendar and other time-tracking apps
 

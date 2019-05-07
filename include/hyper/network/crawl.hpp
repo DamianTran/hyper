@@ -13,7 +13,7 @@
 #include "hyper/network/webio.hpp"
 #include "hyper/toolkit/html.hpp"
 
-namespace hyper
+namespace hyperC
 {
 
 /** =====================================================================

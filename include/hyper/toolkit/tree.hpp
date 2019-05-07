@@ -29,7 +29,7 @@
 #include <string>
 #include <iostream>
 
-namespace hyper
+namespace hyperC
 {
 
 std::ostream& print_tree(std::ostream& output, const boost::property_tree::ptree& tree);

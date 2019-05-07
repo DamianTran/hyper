@@ -36,7 +36,7 @@
 
 /////////////////////////////////////////////////////////////////////////////
 
-namespace hyper
+namespace hyperC
 {
 
 template<class key_t, class container_t, typename value_type>
