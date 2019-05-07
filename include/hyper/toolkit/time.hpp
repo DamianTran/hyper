@@ -15,14 +15,14 @@
 #include <cstdlib>
 #include <sstream>
 
-#define YEARS(N)        hyper::TimePoint( N, 0, 0, 0, 0, 0 )
-#define MONTHS(N)       hyper::TimePoint( 0, N, 0, 0, 0, 0 )
-#define DAYS(N)         hyper::TimePoint( 0, 0, N, 0, 0, 0 )
-#define HOURS(N)        hyper::TimePoint( 0, 0, 0, N, 0, 0 )
-#define MINUTES(N)      hyper::TimePoint( 0, 0, 0, 0, N, 0 )
-#define SECONDS(N)      hyper::TimePoint( 0, 0, 0, 0, 0, N )
+#define YEARS(N)        hyperC::TimePoint( N, 0, 0, 0, 0, 0 )
+#define MONTHS(N)       hyperC::TimePoint( 0, N, 0, 0, 0, 0 )
+#define DAYS(N)         hyperC::TimePoint( 0, 0, N, 0, 0, 0 )
+#define HOURS(N)        hyperC::TimePoint( 0, 0, 0, N, 0, 0 )
+#define MINUTES(N)      hyperC::TimePoint( 0, 0, 0, 0, N, 0 )
+#define SECONDS(N)      hyperC::TimePoint( 0, 0, 0, 0, 0, N )
 
-#define EPOCH_TIME      hyper::TimePoint(2018, 9, 16, 0, 0, 0)
+#define EPOCH_TIME      hyperC::TimePoint(2018, 9, 16, 0, 0, 0)
 
 #define TIME_NOW                        std::chrono::high_resolution_clock::now()
 #define CLOCK_NOW                       std::chrono::system_clock::to_time_t(TIME_NOW)

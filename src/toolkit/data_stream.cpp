@@ -457,7 +457,7 @@ _2Dstream::_2Dstream(const _2Dstream& other):
 
     if(other.search_index)
     {
-        search_index = new hyper::tree_vector<char, coord_string>(*other.search_index);
+        search_index = new hyperC::tree_vector<char, coord_string>(*other.search_index);
     }
     else
     {
@@ -507,7 +507,7 @@ _2Dstream& _2Dstream::operator=(const _2Dstream& other)
 
     if(other.search_index)
     {
-        search_index = new hyper::tree_vector<char, coord_string>(*other.search_index);
+        search_index = new hyperC::tree_vector<char, coord_string>(*other.search_index);
     }
     else
     {

@@ -120,7 +120,7 @@ string monthStr(const unsigned int& monthInt)
 int monthInt(const string& month)
 {
 
-    unsigned int output = hyper::getMatchingIndex(month, calendar_months, CMP_STR_CASE_INSENSITIVE |
+    unsigned int output = hyperC::getMatchingIndex(month, calendar_months, CMP_STR_CASE_INSENSITIVE |
                                                                         CMP_STR_SIZE_INSENSITIVE |
                                                                         CMP_STR_SW);
     if(output == UINT_MAX) return 0;
@@ -690,8 +690,8 @@ void TimePoint::getTimeNow()
     ostringstream oss;
     oss << put_time(&tm, "20%y %m %d %H %M %S");
 
-    hyper::StringVector timeStr;
-    hyper::splitString(oss.str(), timeStr, " ");
+    hyperC::StringVector timeStr;
+    hyperC::splitString(oss.str(), timeStr, " ");
 
     for(auto str : timeStr)
     {
