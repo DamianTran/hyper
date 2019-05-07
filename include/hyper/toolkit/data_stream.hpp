@@ -23,7 +23,7 @@
 #define ORIENTATION_COLUMN              2_BIT
 #define ORIENTATION_UNKNOWN             3_BIT
 
-namespace hyper
+namespace hyperC
 {
 
 /**  =============================================================

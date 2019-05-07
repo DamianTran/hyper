@@ -28,7 +28,7 @@
 
 #include "hyper/algorithm.hpp"
 
-using namespace hyper;
+using namespace hyperC;
 
 template<class T1, class T2>
 class VariableMonitor{

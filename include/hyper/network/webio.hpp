@@ -32,7 +32,7 @@
 
 #include "hyper/toolkit/html.hpp"
 
-namespace hyper
+namespace hyperC
 {
 
 /** Basic web page class with auto-assembly */

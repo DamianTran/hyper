@@ -26,7 +26,7 @@
 namespace pt = boost::property_tree;
 namespace fs = boost::filesystem;
 
-namespace hyper
+namespace hyperC
 {
 
 std::ostream& print_tree(std::ostream& output, const pt::ptree& tree){

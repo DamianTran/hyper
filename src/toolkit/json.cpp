@@ -28,7 +28,7 @@
 
 using namespace std;
 
-namespace hyper{
+namespace hyperC{
 
 void get_JSON_name_type(const string& filename,
                         const string& var_name,

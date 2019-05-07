@@ -41,7 +41,7 @@
 
 using namespace boost::filesystem;
 
-namespace hyper
+namespace hyperC
 {
 
 const static size_t zip_inflate_buf_size = 16384;

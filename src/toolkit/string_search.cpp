@@ -23,7 +23,7 @@
 
 using namespace std;
 
-namespace hyper
+namespace hyperC
 {
 
 bool getClusterMap(const char* str,

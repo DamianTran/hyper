@@ -142,7 +142,7 @@ inline constexpr unsigned char operator"" _BYTE(unsigned long long uint)
 
 // Typedefs
 
-namespace hyper
+namespace hyperC
 {
 
 typedef unsigned char BYTE;

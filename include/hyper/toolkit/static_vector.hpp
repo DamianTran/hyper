@@ -6,7 +6,7 @@
 #include <vector>
 #include <iostream>
 
-namespace hyper
+namespace hyperC
 {
 
 /** Iterator class for static vector container */

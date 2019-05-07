@@ -33,7 +33,7 @@
 namespace fs = boost::filesystem;
 using namespace std;
 
-namespace hyper
+namespace hyperC
 {
 
 const vector<string> description_attributes = {

@@ -27,7 +27,7 @@
 
 using namespace std;
 
-namespace hyper
+namespace hyperC
 {
 
 HTML_tree::HTML_tree(const char* str, const size_t& level):

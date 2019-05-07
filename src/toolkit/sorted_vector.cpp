@@ -25,7 +25,7 @@
 
 #include "hyper/algorithm.hpp"
 
-using namespace hyper;
+using namespace hyperC;
 
 void SortedStringVector::update_map(){
 
