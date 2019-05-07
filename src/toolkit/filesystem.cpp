@@ -18,10 +18,10 @@
 
 ////////////////////////////////////////////////////////////////  **/
 
-#include "EZC/toolkit/filesystem.hpp"
-#include "EZC/toolkit/data_stream.hpp"
+#include "hyper/toolkit/filesystem.hpp"
+#include "hyper/toolkit/data_stream.hpp"
 
-#include "EZC/algorithm.hpp"
+#include "hyper/algorithm.hpp"
 
 #include <stdio.h>
 #include <unistd.h>
@@ -33,7 +33,7 @@
 namespace fs = boost::filesystem;
 using namespace std;
 
-namespace EZC
+namespace hyper
 {
 
 fs::path base_directory(const fs::path& path)

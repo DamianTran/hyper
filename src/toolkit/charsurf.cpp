@@ -18,13 +18,13 @@
 
 ////////////////////////////////////////////////////////////////  **/
 
-#include "EZC/toolkit/charsurf.hpp"
-#include "EZC/toolkit/string.hpp"
-#include "EZC/toolkit/string_search.hpp"
+#include "hyper/toolkit/charsurf.hpp"
+#include "hyper/toolkit/string.hpp"
+#include "hyper/toolkit/string_search.hpp"
 
 using namespace std;
 
-namespace EZC
+namespace hyper
 {
 
 bool ptr_at_string(const char* ptr, const char* query,

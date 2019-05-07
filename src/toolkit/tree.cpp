@@ -18,7 +18,7 @@
 
 ////////////////////////////////////////////////////////////////  **/
 
-#include "EZC/toolkit/tree.hpp"
+#include "hyper/toolkit/tree.hpp"
 
 #include "boost/property_tree/xml_parser.hpp"
 #include "boost/filesystem.hpp"
@@ -26,7 +26,7 @@
 namespace pt = boost::property_tree;
 namespace fs = boost::filesystem;
 
-namespace EZC
+namespace hyper
 {
 
 std::ostream& print_tree(std::ostream& output, const pt::ptree& tree){

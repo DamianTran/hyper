@@ -18,8 +18,8 @@
 
 ////////////////////////////////////////////////////////////////  **/
 
-#include "EZC/toolkit/zip.hpp"
-#include "EZC/toolkit/filesystem.hpp"
+#include "hyper/toolkit/zip.hpp"
+#include "hyper/toolkit/filesystem.hpp"
 #include "boost/filesystem.hpp"
 
 #include <errno.h>
@@ -41,7 +41,7 @@
 
 using namespace boost::filesystem;
 
-namespace EZC
+namespace hyper
 {
 
 const static size_t zip_inflate_buf_size = 16384;

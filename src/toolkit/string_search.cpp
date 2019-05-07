@@ -18,12 +18,12 @@
 
 ////////////////////////////////////////////////////////////////  **/
 
-#include "EZC/toolkit/string_search.hpp"
-#include "EZC/toolkit/charsurf.hpp"
+#include "hyper/toolkit/string_search.hpp"
+#include "hyper/toolkit/charsurf.hpp"
 
 using namespace std;
 
-namespace EZC
+namespace hyper
 {
 
 bool getClusterMap(const char* str,

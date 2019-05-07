@@ -18,14 +18,14 @@
 
 ////////////////////////////////////////////////////////////////  **/
 
-#include "EZC/toolkit/sorted_vector.hpp"
-#include "EZC/toolkit/string.hpp"
+#include "hyper/toolkit/sorted_vector.hpp"
+#include "hyper/toolkit/string.hpp"
 
 #include <boost/range/adaptors.hpp>
 
-#include "EZC/algorithm.hpp"
+#include "hyper/algorithm.hpp"
 
-using namespace EZC;
+using namespace hyper;
 
 void SortedStringVector::update_map(){
 

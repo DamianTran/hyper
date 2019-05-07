@@ -18,16 +18,16 @@
 
 ////////////////////////////////////////////////////////////////  **/
 
-#include "EZC/toolkit/html.hpp"
-#include "EZC/algorithm.hpp"
+#include "hyper/toolkit/html.hpp"
+#include "hyper/algorithm.hpp"
 
-#include "EZC/toolkit/charsurf.hpp"
-#include "EZC/toolkit/string.hpp"
-#include "EZC/toolkit/string_search.hpp"
+#include "hyper/toolkit/charsurf.hpp"
+#include "hyper/toolkit/string.hpp"
+#include "hyper/toolkit/string_search.hpp"
 
 using namespace std;
 
-namespace EZC
+namespace hyper
 {
 
 HTML_tree::HTML_tree(const char* str, const size_t& level):

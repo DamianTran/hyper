@@ -1,6 +1,6 @@
-#include "EZC/toolkit/console.hpp"
+#include "hyper/toolkit/console.hpp"
 
-namespace EZC
+namespace hyper
 {
 
 void clear_console(char fill)

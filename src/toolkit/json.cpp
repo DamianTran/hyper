@@ -18,17 +18,17 @@
 
 ////////////////////////////////////////////////////////////////  **/
 
-#include "EZC/toolkit/json.hpp"
-#include "EZC/toolkit/string.hpp"
-#include "EZC/toolkit/filesystem.hpp"
-#include "EZC/toolkit/charsurf.hpp"
+#include "hyper/toolkit/json.hpp"
+#include "hyper/toolkit/string.hpp"
+#include "hyper/toolkit/filesystem.hpp"
+#include "hyper/toolkit/charsurf.hpp"
 
 #include <stdio.h>
 #include <unistd.h>
 
 using namespace std;
 
-namespace EZC{
+namespace hyper{
 
 void get_JSON_name_type(const string& filename,
                         const string& var_name,
