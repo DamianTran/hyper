@@ -12,6 +12,7 @@
 #include <stdexcept>
 #include <string>
 #include <vector>
+<<<<<<< HEAD
 #include <cstdlib>
 
 #define YEARS(N)        hyperC::TimePoint( N, 0, 0, 0, 0, 0 )
@@ -22,6 +23,19 @@
 #define SECONDS(N)      hyperC::TimePoint( 0, 0, 0, 0, 0, N )
 
 #define EPOCH_TIME      hyperC::TimePoint(2018, 9, 16, 0, 0, 0)
+=======
+#include <cstdlib>
+#include <sstream>
+
+#define YEARS(N)        hyper::TimePoint( N, 0, 0, 0, 0, 0 )
+#define MONTHS(N)       hyper::TimePoint( 0, N, 0, 0, 0, 0 )
+#define DAYS(N)         hyper::TimePoint( 0, 0, N, 0, 0, 0 )
+#define HOURS(N)        hyper::TimePoint( 0, 0, 0, N, 0, 0 )
+#define MINUTES(N)      hyper::TimePoint( 0, 0, 0, 0, N, 0 )
+#define SECONDS(N)      hyper::TimePoint( 0, 0, 0, 0, 0, N )
+
+#define EPOCH_TIME      hyper::TimePoint(2018, 9, 16, 0, 0, 0)
+>>>>>>> 3b0c32ddfb16be28933e555771349a1bbaf00268
 
 #define TIME_NOW                        std::chrono::high_resolution_clock::now()
 #define CLOCK_NOW                       std::chrono::system_clock::to_time_t(TIME_NOW)
@@ -29,7 +43,11 @@
 
 #define DURATION(t0, t1)                std::chrono::duration<float>(t1 - t0).count()
 
+<<<<<<< HEAD
 namespace hyperC{
+=======
+namespace hyper{
+>>>>>>> 3b0c32ddfb16be28933e555771349a1bbaf00268
 
 // Time scales used for calendar and other time-tracking apps
 

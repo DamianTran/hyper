@@ -26,7 +26,11 @@
 #include <string>
 #include <vector>
 
+<<<<<<< HEAD
 namespace hyperC
+=======
+namespace hyper
+>>>>>>> 3b0c32ddfb16be28933e555771349a1bbaf00268
 {
 
 bool ptr_at_string(const char* ptr, const char* query,

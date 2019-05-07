@@ -29,7 +29,11 @@
 #include <string>
 #include <iostream>
 
+<<<<<<< HEAD
 namespace hyperC
+=======
+namespace hyper
+>>>>>>> 3b0c32ddfb16be28933e555771349a1bbaf00268
 {
 
 std::ostream& print_tree(std::ostream& output, const boost::property_tree::ptree& tree);

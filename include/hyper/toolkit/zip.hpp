@@ -30,7 +30,11 @@
 #include <string>
 #include <iostream>
 
+<<<<<<< HEAD
 namespace hyperC
+=======
+namespace hyper
+>>>>>>> 3b0c32ddfb16be28933e555771349a1bbaf00268
 {
 
 std::ostream& print_archive(std::ostream& output, const std::string& filename);

@@ -20,8 +20,13 @@
 
 #pragma once
 
+<<<<<<< HEAD
 #ifndef HYPER_ALGORITHM
 #define HYPER_ALGORITHM
+=======
+#ifndef hyper_ALGORITHM
+#define hyper_ALGORITHM
+>>>>>>> 3b0c32ddfb16be28933e555771349a1bbaf00268
 
 #include <cstdlib>
 #include <string>
@@ -142,7 +147,11 @@ inline constexpr unsigned char operator"" _BYTE(unsigned long long uint)
 
 // Typedefs
 
+<<<<<<< HEAD
 namespace hyperC
+=======
+namespace hyper
+>>>>>>> 3b0c32ddfb16be28933e555771349a1bbaf00268
 {
 
 typedef unsigned char BYTE;
@@ -3856,4 +3865,8 @@ inline float getDuration(const std::chrono::high_resolution_clock::time_point& t
 
 
 
+<<<<<<< HEAD
 #endif // HYPER_ALGORITHM
+=======
+#endif // hyper_ALGORITHM
+>>>>>>> 3b0c32ddfb16be28933e555771349a1bbaf00268

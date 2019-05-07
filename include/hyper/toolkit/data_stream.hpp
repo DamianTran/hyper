@@ -23,7 +23,11 @@
 #define ORIENTATION_COLUMN              2_BIT
 #define ORIENTATION_UNKNOWN             3_BIT
 
+<<<<<<< HEAD
 namespace hyperC
+=======
+namespace hyper
+>>>>>>> 3b0c32ddfb16be28933e555771349a1bbaf00268
 {
 
 /**  =============================================================
@@ -38,10 +42,17 @@ typedef std::vector<unsigned int>                   uint_v;
 typedef std::vector<std::vector<unsigned int>>      uint_m;
 
 typedef std::vector<std::string>                    tagList;
+<<<<<<< HEAD
 typedef hyperC::VectorPair<std::string>                pairedTags;
 typedef std::vector<hyperC::Vector2<unsigned int>>     pairedCoords;
 typedef hyperC::Vector2<float>                         Vector2f;
 typedef hyperC::Vector2<unsigned int>                  Vector2u;
+=======
+typedef hyper::VectorPair<std::string>                pairedTags;
+typedef std::vector<hyper::Vector2<unsigned int>>     pairedCoords;
+typedef hyper::Vector2<float>                         Vector2f;
+typedef hyper::Vector2<unsigned int>                  Vector2u;
+>>>>>>> 3b0c32ddfb16be28933e555771349a1bbaf00268
 
 /**  =============================================================
 
@@ -138,7 +149,11 @@ struct coord_string : public std::string
         return output << input.c_str() << '[' << input.coords.x << ',' << input.coords.y << ']';
     }
 
+<<<<<<< HEAD
     hyperC::Vector2u coords;
+=======
+    hyper::Vector2u coords;
+>>>>>>> 3b0c32ddfb16be28933e555771349a1bbaf00268
 };
 
 class _2Dstream{
@@ -162,15 +177,24 @@ protected:
     dimArray                    rowSizes;
     dimArray                    rowDataSizes;
 
+<<<<<<< HEAD
     hyperC::vMatrix<uint16_t>      indexSizes;
     hyperC::vMatrix<uint32_t>      indexPos;
+=======
+    hyper::vMatrix<uint16_t>      indexSizes;
+    hyper::vMatrix<uint32_t>      indexPos;
+>>>>>>> 3b0c32ddfb16be28933e555771349a1bbaf00268
 
     bool verbose;
     bool active;                                // Prevent conflicts between separate processes using this stream
     bool imported;                              // Switch access modes if dataset has been loaded into RAM
 
     std::vector<coord_string> coord_index;
+<<<<<<< HEAD
     hyperC::tree_vector<char, coord_string> *       search_index;
+=======
+    hyper::tree_vector<char, coord_string> *       search_index;
+>>>>>>> 3b0c32ddfb16be28933e555771349a1bbaf00268
 
 public:
 
@@ -223,9 +247,15 @@ public:
     _1Dstream operator[](const std::string& x) const;
 
     _2Dstream operator[](const std::vector<unsigned int>& rows) const;
+<<<<<<< HEAD
     _2Dstream operator[](const hyperC::VectorPair<unsigned int>& bounds) const;
 
     bool find(hyperC::VectorPairU& output, const std::string& target, const float& size_threshold = 0.1f,
+=======
+    _2Dstream operator[](const hyper::VectorPair<unsigned int>& bounds) const;
+
+    bool find(hyper::VectorPairU& output, const std::string& target, const float& size_threshold = 0.1f,
+>>>>>>> 3b0c32ddfb16be28933e555771349a1bbaf00268
               const float& match_threshold = 1.0f);
     Vector2u getCoords(const std::string& target, const float& threshold = 0.1f);
     bool check(const std::string& target,
@@ -236,7 +266,11 @@ public:
 
     void get(const unsigned int& x, const unsigned int& y) const; // Returns copied data - must delete pointer after every call
     std::string getString(const unsigned int& x, const unsigned int& y) const;
+<<<<<<< HEAD
     template<typename T> std::string getString(const hyperC::Vector2<T>& coords) const{
+=======
+    template<typename T> std::string getString(const hyper::Vector2<T>& coords) const{
+>>>>>>> 3b0c32ddfb16be28933e555771349a1bbaf00268
         return getString((unsigned int)coords.x, (unsigned int)coords.y);
     }
     float getFloat(const unsigned int& x, const unsigned int& y) const;
@@ -267,8 +301,13 @@ public:
     explicit _2Dstream(const std::string& filename, const bool& verbose = true,
                        const std::string& delim = "");
     explicit _2Dstream(const bool& verbose, const std::string& delim = "\t");
+<<<<<<< HEAD
     explicit _2Dstream(std::string filename, hyperC::vMatrix<uint32_t>& indexPos,
                        hyperC::vMatrix<uint16_t>& indexSizes,
+=======
+    explicit _2Dstream(std::string filename, hyper::vMatrix<uint32_t>& indexPos,
+                       hyper::vMatrix<uint16_t>& indexSizes,
+>>>>>>> 3b0c32ddfb16be28933e555771349a1bbaf00268
                     dimArray& rowSizes, dimArray& rowDataSizes,
                     const std::string& delim);
 
@@ -310,12 +349,20 @@ inline unsigned int numDelim(char* c, const unsigned int L){
 bool isNumeric(const _1Dstream& stream, const unsigned int index);
 
 std::string getMatchingString(const std::string& query, _2Dstream& stream);
+<<<<<<< HEAD
 Vector2u getBestStreamMatch(hyperC::VectorPairU& coords,
+=======
+Vector2u getBestStreamMatch(hyper::VectorPairU& coords,
+>>>>>>> 3b0c32ddfb16be28933e555771349a1bbaf00268
                             _2Dstream& stream,
                             const std::string& target,
                             const unsigned char& params = CMP_STR_DEFAULT | CMP_STR_SW,
                             const float& threshold = 0.5f);
+<<<<<<< HEAD
 void getBestStreamMatchCoords(hyperC::VectorPairU& coords, _2Dstream& stream, const std::string& target);
+=======
+void getBestStreamMatchCoords(hyper::VectorPairU& coords, _2Dstream& stream, const std::string& target);
+>>>>>>> 3b0c32ddfb16be28933e555771349a1bbaf00268
 
 bool filterStreamMatch(std::vector<std::string>& prompt, _2Dstream& stream, bool getMatches = true);
 bool checkAnyStreamMatch(std::vector<std::string>& query, _2Dstream& stream, bool getMatches = false);
@@ -324,9 +371,15 @@ bool checkAnyStreamMatch(std::vector<std::string>& query, _2Dstream& stream, boo
 uint8_t getSearchOrientation(const std::string& query, _2Dstream& dataSource);
 
 // Assess alignment of coordinates given back by a stream search query
+<<<<<<< HEAD
 uint8_t assessCoordAlignment(const hyperC::VectorPairU& coords, _2Dstream& dataSource); // Relative to global boundaries
 uint8_t assessCoordAlignment(const hyperC::VectorPairU& inCoords, const hyperC::VectorPairU& outCoords); // Relative to other coordinates
 uint8_t assessCoordAlignment(const hyperC::VectorPairU& coords); // Relative to self
+=======
+uint8_t assessCoordAlignment(const hyper::VectorPairU& coords, _2Dstream& dataSource); // Relative to global boundaries
+uint8_t assessCoordAlignment(const hyper::VectorPairU& inCoords, const hyper::VectorPairU& outCoords); // Relative to other coordinates
+uint8_t assessCoordAlignment(const hyper::VectorPairU& coords); // Relative to self
+>>>>>>> 3b0c32ddfb16be28933e555771349a1bbaf00268
 
 // Data visualization
 

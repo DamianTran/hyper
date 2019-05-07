@@ -1,15 +1,27 @@
 #pragma once
 
+<<<<<<< HEAD
 #ifndef HYPER_STATIC_VECTOR
 #define HYPER_STATIC_VECTOR
+=======
+#ifndef hyper_STATIC_VECTOR
+#define hyper_STATIC_VECTOR
+>>>>>>> 3b0c32ddfb16be28933e555771349a1bbaf00268
 
 #include <vector>
 #include <iostream>
 
+<<<<<<< HEAD
 namespace hyperC
 {
 
 /** Iterator class for static vector container */
+=======
+namespace hyper
+{
+
+/** Iterator class for static vector container */
+>>>>>>> 3b0c32ddfb16be28933e555771349a1bbaf00268
 
 template<typename T>
 class ptr_iterator : public std::iterator<std::random_access_iterator_tag,
@@ -130,11 +142,144 @@ public:
             delete(*(this->data() + i));
         }
     }
+<<<<<<< HEAD
 
     typedef ptr_iterator<value_type>                         iterator;
     typedef ptr_iterator<const value_type>                   const_iterator;
     typedef ptr_reverse_iterator<value_type>                 reverse_iterator;
     typedef ptr_reverse_iterator<const value_type>           const_reverse_iterator;
+=======
+
+    #ifdef __APPLE__
+
+    class iterator_ptr
+    {
+    public:
+
+        iterator_ptr(value_type** ptr):
+            _ptr(ptr){ }
+
+        inline friend ptrdiff_t distance(const iterator_ptr& first,
+                                         const iterator_ptr& second)
+        {
+            return std::distance(first._ptr, second._ptr);
+        }
+
+        bool operator==(const iterator_ptr& other) const{ return this->_ptr == other._ptr; }
+        bool operator!=(const iterator_ptr& other) const{ return this->_ptr != other._ptr; }
+
+    protected:
+
+        value_type** _ptr;
+    };
+
+    class iterator : public iterator_ptr
+    {
+    public:
+
+        iterator(value_type** ptr):
+            iterator_ptr(ptr){ }
+
+        void operator++(){ ++this->_ptr; }
+        void operator--(){ --this->_ptr; }
+        iterator operator++(int){ auto output(*this); ++output; return output; }
+        iterator operator--(int){ auto output(*this); --output; return output; }
+
+        void operator+=(const ptrdiff_t& movement){ this->_ptr += movement; }
+        void operator-=(const ptrdiff_t& movement){ this->_ptr -= movement; }
+
+        iterator operator+(const ptrdiff_t& movement) const{ auto output(*this); output += movement; return output; }
+        iterator operator-(const ptrdiff_t& movement) const{ auto output(*this); output -= movement; return output; }
+
+        value_type& operator*(){ return **this->_ptr; }
+        value_type* operator->(){ return *this->_ptr; }
+
+        value_type** getPtr() const{ return this->_ptr; }
+
+    };
+
+    class const_iterator : public iterator_ptr
+    {
+    public:
+
+        const_iterator(value_type** ptr):
+            iterator_ptr(ptr){ }
+
+        void operator++(){ ++this->_ptr; }
+        void operator--(){ --this->_ptr; }
+        const_iterator operator++(int){ auto output(*this); ++output; return output; }
+        const_iterator operator--(int){ auto output(*this); --output; return output; }
+
+        void operator+=(const ptrdiff_t& movement){ this->_ptr += movement; }
+        void operator-=(const ptrdiff_t& movement){ this->_ptr -= movement; }
+
+        const_iterator operator+(const ptrdiff_t& movement) const{ auto output(*this); output += movement; return output; }
+        const_iterator operator-(const ptrdiff_t& movement) const{ auto output(*this); output -= movement; return output; }
+
+        const value_type& operator*() const{ return **this->_ptr; }
+        const value_type* operator->() const{ return *this->_ptr; }
+
+        const value_type** getPtr() const{ return this->_ptr; }
+
+    };
+
+    class reverse_iterator : public iterator_ptr
+    {
+    public:
+
+        reverse_iterator(value_type** ptr):
+            iterator_ptr(ptr){ }
+
+        void operator++(){ --this->_ptr; }
+        void operator--(){ ++this->_ptr; }
+        reverse_iterator operator++(int){ auto output(*this); --output; return output; }
+        reverse_iterator operator--(int){ auto output(*this); ++output; return output; }
+
+        void operator+=(const ptrdiff_t& movement){ this->_ptr -= movement; }
+        void operator-=(const ptrdiff_t& movement){ this->_ptr += movement; }
+
+        reverse_iterator operator+(const ptrdiff_t& movement) const{ auto output(*this); output += movement; return output; }
+        reverse_iterator operator-(const ptrdiff_t& movement) const{ auto output(*this); output -= movement; return output; }
+
+        value_type& operator*(){ return **this->_ptr; }
+        value_type* operator->(){ return *this->_ptr; }
+
+        value_type** getPtr() const{ return this->_ptr; }
+
+    };
+
+    class const_reverse_iterator : public iterator_ptr
+    {
+    public:
+
+        const_reverse_iterator(value_type** ptr):
+            iterator_ptr(ptr){ }
+
+        void operator++(){ --this->_ptr; }
+        void operator--(){ ++this->_ptr; }
+        const_reverse_iterator operator++(int){ auto output(*this); --output; return output; }
+        const_reverse_iterator operator--(int){ auto output(*this); ++output; return output; }
+
+        void operator+=(const ptrdiff_t& movement){ this->_ptr -= movement; }
+        void operator-=(const ptrdiff_t& movement){ this->_ptr += movement; }
+
+        const_reverse_iterator operator+(const ptrdiff_t& movement) const{ auto output(*this); output += movement; return output; }
+        const_reverse_iterator operator-(const ptrdiff_t& movement) const{ auto output(*this); output -= movement; return output; }
+
+        const value_type& operator*() const{ return **this->_ptr; }
+        const value_type* operator->() const{ return *this->_ptr; }
+
+        const value_type** getPtr() const{ return this->_ptr; }
+
+    };
+
+    #else
+    typedef ptr_iterator<value_type>                         iterator;
+    typedef ptr_iterator<const value_type>                   const_iterator;
+    typedef ptr_reverse_iterator<value_type>                 reverse_iterator;
+    typedef ptr_reverse_iterator<const value_type>           const_reverse_iterator;
+    #endif
+>>>>>>> 3b0c32ddfb16be28933e555771349a1bbaf00268
 
     iterator                        begin()             { return iterator(this->data()); }
     const_iterator                  begin()       const { return const_iterator(this->data()); }
@@ -187,10 +332,20 @@ public:
     }
 
     template<typename o_value_type>
+<<<<<<< HEAD
     inline void insert(const ptr_iterator<value_type>& position, o_value_type& val)
     {
 
         int dist = std::distance(position.getPtr(), rbegin().getPtr()) + 1;
+=======
+    inline void insert(const iterator& position, o_value_type& val)
+    {
+        #ifdef __APPLE__
+        int dist = distance(position.getPtr(), rbegin().getPtr()) + 1;
+        #else
+        int dist = std::distance(position.getPtr(), rbegin().getPtr()) + 1;
+        #endif
+>>>>>>> 3b0c32ddfb16be28933e555771349a1bbaf00268
 
         this->emplace_back(this->back());
         ptr_reverse_iterator<value_type> it = rbegin();
@@ -204,10 +359,21 @@ public:
 
     }
 
+<<<<<<< HEAD
     inline void erase(const ptr_iterator<value_type>& position)
     {
         delete(*position.getPtr());
         std::vector<value_type*>::erase(std::vector<value_type*>::begin() + std::distance(begin(), position));
+=======
+    inline void erase(const iterator& position)
+    {
+        delete(*position.getPtr());
+        #ifdef __APPLE__
+        std::vector<value_type*>::erase(std::vector<value_type*>::begin() + distance(begin(), position));
+        #else
+        std::vector<value_type*>::erase(std::vector<value_type*>::begin() + std::distance(begin(), position));
+        #endif
+>>>>>>> 3b0c32ddfb16be28933e555771349a1bbaf00268
     }
 
     inline void clear()
@@ -223,4 +389,8 @@ public:
 
 }
 
+<<<<<<< HEAD
 #endif // HYPER_STATIC_VECTOR
+=======
+#endif // hyper_STATIC_VECTOR
+>>>>>>> 3b0c32ddfb16be28933e555771349a1bbaf00268
