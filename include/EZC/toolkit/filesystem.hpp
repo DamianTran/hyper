@@ -49,6 +49,8 @@ namespace EZC
 typedef std::vector<boost::filesystem::path> PathList;
 typedef boost::filesystem::directory_iterator DIR_ITERATOR;
 
+std::string getUserDataPath();
+
 boost::filesystem::path base_directory(const boost::filesystem::path& path);
 
 bool getPathListNames(const PathList& input, std::vector<std::string>& output);

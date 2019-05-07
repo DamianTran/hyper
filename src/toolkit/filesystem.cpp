@@ -20,6 +20,7 @@
 
 #include "EZC/toolkit/filesystem.hpp"
 #include "EZC/toolkit/data_stream.hpp"
+#include "EZC/toolkit/string.hpp"
 
 #include "EZC/algorithm.hpp"
 
@@ -28,6 +29,7 @@
 
 #if defined WIN32 || defined _WIN32
 #include <windows.h>
+#include <Shlobj.h>
 #endif
 
 namespace fs = boost::filesystem;
@@ -35,6 +37,28 @@ using namespace std;
 
 namespace EZC
 {
+
+string getUserDataPath()
+{
+
+    #if defined __WIN32 || defined _WIN32 || defined WIN32
+    WCHAR path[MAX_PATH];
+    if(SUCCEEDED(SHGetFolderPathW(NULL, CSIDL_PROFILE, NULL, 0, path)))
+    {
+
+        wstring output(path);
+        return UTF16_to_UTF8(output);
+
+    }
+    else
+    {
+        return string();
+    }
+    #elif defined __APPLE__
+    // Implement iOS version
+    #endif
+
+}
 
 fs::path base_directory(const fs::path& path)
 {
