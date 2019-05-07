@@ -18,11 +18,11 @@
 
 ////////////////////////////////////////////////////////////////  **/
 
-#include "EZC/toolkit/filesystem.hpp"
-#include "EZC/toolkit/data_stream.hpp"
-#include "EZC/toolkit/string.hpp"
+#include "hyper/toolkit/filesystem.hpp"
+#include "hyper/toolkit/data_stream.hpp"
+#include "hyper/toolkit/string.hpp"
 
-#include "EZC/algorithm.hpp"
+#include "hyper/algorithm.hpp"
 
 #include <stdio.h>
 #include <unistd.h>
@@ -35,7 +35,7 @@
 namespace fs = boost::filesystem;
 using namespace std;
 
-namespace EZC
+namespace hyperC
 {
 
 string getUserDataPath()

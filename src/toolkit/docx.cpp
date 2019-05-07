@@ -18,14 +18,14 @@
 
 ////////////////////////////////////////////////////////////////  **/
 
-#include "EZC/toolkit/docx.hpp"
-#include "EZC/toolkit/tree.hpp"
-#include "EZC/toolkit/html.hpp"
-#include "EZC/toolkit/charsurf.hpp"
-#include "EZC/toolkit/string.hpp"
+#include "hyper/toolkit/docx.hpp"
+#include "hyper/toolkit/tree.hpp"
+#include "hyper/toolkit/html.hpp"
+#include "hyper/toolkit/charsurf.hpp"
+#include "hyper/toolkit/string.hpp"
 
-#include "EZC/toolkit/filesystem.hpp"
-#include "EZC/algorithm.hpp"
+#include "hyper/toolkit/filesystem.hpp"
+#include "hyper/algorithm.hpp"
 
 #include "boost/property_tree/ptree.hpp"
 #include "boost/property_tree/xml_parser.hpp"
@@ -45,7 +45,7 @@
 using namespace std;
 using namespace boost::filesystem;
 namespace pt = boost::property_tree;
-using namespace EZC;
+using namespace hyperC;
 
 bool getDocumentBody(string& output, const string& filename)
 {

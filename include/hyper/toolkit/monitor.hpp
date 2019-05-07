@@ -26,9 +26,9 @@
 #include <unistd.h>
 #include <cstdlib>
 
-#include "EZC/algorithm.hpp"
+#include "hyper/algorithm.hpp"
 
-using namespace EZC;
+using namespace hyper;
 
 template<class T1, class T2>
 class VariableMonitor{

@@ -27,8 +27,8 @@
 #include <map>
 #include <utility>
 
-#include "EZC/toolkit/reference_vector.hpp"
-#include "EZC/algorithm.hpp"
+#include "hyper/toolkit/reference_vector.hpp"
+#include "hyper/algorithm.hpp"
 
 /////////////////////////////////////////////////////////////////////////////
 
@@ -36,7 +36,7 @@
 
 /////////////////////////////////////////////////////////////////////////////
 
-namespace EZC
+namespace hyperC
 {
 
 template<class key_t, class container_t, typename value_type>

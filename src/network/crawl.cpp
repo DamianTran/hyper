@@ -1,14 +1,14 @@
-#include "EZC/network/crawl.hpp"
-#include "EZC/network/webio.hpp"
+#include "hyper/network/crawl.hpp"
+#include "hyper/network/webio.hpp"
 
-#include "EZC/toolkit/html.hpp"
-#include "EZC/toolkit/console.hpp"
-#include "EZC/toolkit/string.hpp"
-#include "EZC/toolkit/string_search.hpp"
+#include "hyper/toolkit/html.hpp"
+#include "hyper/toolkit/console.hpp"
+#include "hyper/toolkit/string.hpp"
+#include "hyper/toolkit/string_search.hpp"
 
 #include <boost/filesystem.hpp>
 
-#define EZC_SPIDER_CONSTRUCT        \
+#define hyper_SPIDER_CONSTRUCT        \
     bSuccess(false),                \
     bVerbose(false),                \
     bStayOnDomain(false),           \
@@ -19,14 +19,14 @@
 namespace fs = boost::filesystem;
 using namespace std;
 
-namespace EZC
+namespace hyperC
 {
 
 Spider::Spider():
-    EZC_SPIDER_CONSTRUCT{ }
+    hyper_SPIDER_CONSTRUCT{ }
 
 Spider::Spider(const string& URL):
-    EZC_SPIDER_CONSTRUCT
+    hyper_SPIDER_CONSTRUCT
 {
     go_to(URL);
 }

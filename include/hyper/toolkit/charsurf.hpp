@@ -26,7 +26,7 @@
 #include <string>
 #include <vector>
 
-namespace EZC
+namespace hyperC
 {
 
 bool ptr_at_string(const char* ptr, const char* query,

@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef EZC_CRAWL
-#define EZC_CRAWL
+#ifndef hyper_CRAWL
+#define hyper_CRAWL
 
 #include <string>
 #include <vector>
@@ -10,10 +10,10 @@
 #include <unordered_set>
 #include <sstream>
 
-#include "EZC/network/webio.hpp"
-#include "EZC/toolkit/html.hpp"
+#include "hyper/network/webio.hpp"
+#include "hyper/toolkit/html.hpp"
 
-namespace EZC
+namespace hyperC
 {
 
 /** =====================================================================
@@ -159,4 +159,4 @@ int WebCrawlProgram(int argc = 0, char** argv = nullptr);
 
 }
 
-#endif // EZC_CRAWL
+#endif // hyper_CRAWL

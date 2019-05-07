@@ -20,28 +20,22 @@
 
 #pragma once
 
-#ifndef EZ_ZIP
-#define EZ_ZIP
+#ifndef EZ_TREE
+#define EZ_TREE
 
-#include "stdio.h"
-#include "unistd.h"
-#include "cstdlib"
+#include "boost/property_tree/ptree.hpp"
 
+#include <vector>
 #include <string>
 #include <iostream>
 
-namespace EZC
+namespace hyperC
 {
 
-std::ostream& print_archive(std::ostream& output, const std::string& filename);
-bool extract(const std::string& filename, const std::string& outPath = "");
-bool archive(const std::string& directory, const std::string& outName = "");
-
-// Decompress to memory
-size_t decompress(const std::string& filename, void** output);
-bool decompress(const std::string& filename,
-                const std::string& outFileName);
+std::ostream& print_tree(std::ostream& output, const boost::property_tree::ptree& tree);
+std::vector<std::string> getData(const boost::property_tree::ptree& tree,
+                                       const std::string& property);
 
 }
 
-#endif // EZ_ZIP
+#endif // EZ_TREE

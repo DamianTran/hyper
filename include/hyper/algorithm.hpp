@@ -20,8 +20,8 @@
 
 #pragma once
 
-#ifndef EZC_ALGORITHM
-#define EZC_ALGORITHM
+#ifndef HYPER_ALGORITHM
+#define HYPER_ALGORITHM
 
 #include <cstdlib>
 #include <string>
@@ -142,7 +142,7 @@ inline constexpr unsigned char operator"" _BYTE(unsigned long long uint)
 
 // Typedefs
 
-namespace EZC
+namespace hyperC
 {
 
 typedef unsigned char BYTE;
@@ -3856,4 +3856,4 @@ inline float getDuration(const std::chrono::high_resolution_clock::time_point& t
 
 
 
-#endif // EZC_ALGORITHM
+#endif // HYPER_ALGORITHM

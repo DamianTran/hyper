@@ -18,15 +18,15 @@
 
 ////////////////////////////////////////////////////////////////  **/
 
-#include "EZC/toolkit/string.hpp"
-#include "EZC/algorithm.hpp"
+#include "hyper/toolkit/string.hpp"
+#include "hyper/algorithm.hpp"
 
 #include <codecvt>
 #include <locale>
 
 using namespace std;
 
-namespace EZC
+namespace hyperC
 {
 
 void trimSpaces(string& tag)

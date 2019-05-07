@@ -20,8 +20,8 @@
 
 #pragma once
 
-#ifndef EZ_FILESYSTEM
-#define EZ_FILESYSTEM
+#ifndef HYPER_FILESYSTEM
+#define HYPER_FILESYSTEM
 
 #include <boost/filesystem.hpp>
 
@@ -41,9 +41,9 @@
 
 #define CMP_STR_DEFAULT 0b1011
 
-#include "EZC/toolkit/string.hpp"
+#include "hyper/toolkit/string.hpp"
 
-namespace EZC
+namespace hyperC
 {
 
 typedef std::vector<boost::filesystem::path> PathList;
@@ -233,4 +233,4 @@ void mread(map_t<key_t, single_t>& list, FILE* inFILE)
 }
 
 }
-#endif // EZ_FILESYSTEM
+#endif // HYPER_FILESYSTEM

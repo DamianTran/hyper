@@ -3,9 +3,9 @@
 #ifndef DATASTREAM_HPP
 #define DATASTREAM_HPP
 
-#include <EZC/algorithm.hpp>
-#include <EZC/toolkit/clustered_vector.hpp>
-#include <EZC/toolkit/string.hpp>
+#include <hyper/algorithm.hpp>
+#include <hyper/toolkit/clustered_vector.hpp>
+#include <hyper/toolkit/string.hpp>
 
 #ifdef AIDA_MODULE_GPU
 #include "AIDA/kernel.hpp"
@@ -23,7 +23,7 @@
 #define ORIENTATION_COLUMN              2_BIT
 #define ORIENTATION_UNKNOWN             3_BIT
 
-namespace EZC
+namespace hyperC
 {
 
 /**  =============================================================
@@ -38,10 +38,10 @@ typedef std::vector<unsigned int>                   uint_v;
 typedef std::vector<std::vector<unsigned int>>      uint_m;
 
 typedef std::vector<std::string>                    tagList;
-typedef EZC::VectorPair<std::string>                pairedTags;
-typedef std::vector<EZC::Vector2<unsigned int>>     pairedCoords;
-typedef EZC::Vector2<float>                         Vector2f;
-typedef EZC::Vector2<unsigned int>                  Vector2u;
+typedef hyperC::VectorPair<std::string>                pairedTags;
+typedef std::vector<hyperC::Vector2<unsigned int>>     pairedCoords;
+typedef hyperC::Vector2<float>                         Vector2f;
+typedef hyperC::Vector2<unsigned int>                  Vector2u;
 
 /**  =============================================================
 
@@ -138,7 +138,7 @@ struct coord_string : public std::string
         return output << input.c_str() << '[' << input.coords.x << ',' << input.coords.y << ']';
     }
 
-    EZC::Vector2u coords;
+    hyperC::Vector2u coords;
 };
 
 class _2Dstream{
@@ -162,15 +162,15 @@ protected:
     dimArray                    rowSizes;
     dimArray                    rowDataSizes;
 
-    EZC::vMatrix<uint16_t>      indexSizes;
-    EZC::vMatrix<uint32_t>      indexPos;
+    hyperC::vMatrix<uint16_t>      indexSizes;
+    hyperC::vMatrix<uint32_t>      indexPos;
 
     bool verbose;
     bool active;                                // Prevent conflicts between separate processes using this stream
     bool imported;                              // Switch access modes if dataset has been loaded into RAM
 
     std::vector<coord_string> coord_index;
-    EZC::tree_vector<char, coord_string> *       search_index;
+    hyperC::tree_vector<char, coord_string> *       search_index;
 
 public:
 
@@ -223,9 +223,9 @@ public:
     _1Dstream operator[](const std::string& x) const;
 
     _2Dstream operator[](const std::vector<unsigned int>& rows) const;
-    _2Dstream operator[](const EZC::VectorPair<unsigned int>& bounds) const;
+    _2Dstream operator[](const hyperC::VectorPair<unsigned int>& bounds) const;
 
-    bool find(EZC::VectorPairU& output, const std::string& target, const float& size_threshold = 0.1f,
+    bool find(hyperC::VectorPairU& output, const std::string& target, const float& size_threshold = 0.1f,
               const float& match_threshold = 1.0f);
     Vector2u getCoords(const std::string& target, const float& threshold = 0.1f);
     bool check(const std::string& target,
@@ -236,7 +236,7 @@ public:
 
     void get(const unsigned int& x, const unsigned int& y) const; // Returns copied data - must delete pointer after every call
     std::string getString(const unsigned int& x, const unsigned int& y) const;
-    template<typename T> std::string getString(const EZC::Vector2<T>& coords) const{
+    template<typename T> std::string getString(const hyperC::Vector2<T>& coords) const{
         return getString((unsigned int)coords.x, (unsigned int)coords.y);
     }
     float getFloat(const unsigned int& x, const unsigned int& y) const;
@@ -267,8 +267,8 @@ public:
     explicit _2Dstream(const std::string& filename, const bool& verbose = true,
                        const std::string& delim = "");
     explicit _2Dstream(const bool& verbose, const std::string& delim = "\t");
-    explicit _2Dstream(std::string filename, EZC::vMatrix<uint32_t>& indexPos,
-                       EZC::vMatrix<uint16_t>& indexSizes,
+    explicit _2Dstream(std::string filename, hyperC::vMatrix<uint32_t>& indexPos,
+                       hyperC::vMatrix<uint16_t>& indexSizes,
                     dimArray& rowSizes, dimArray& rowDataSizes,
                     const std::string& delim);
 
@@ -310,12 +310,12 @@ inline unsigned int numDelim(char* c, const unsigned int L){
 bool isNumeric(const _1Dstream& stream, const unsigned int index);
 
 std::string getMatchingString(const std::string& query, _2Dstream& stream);
-Vector2u getBestStreamMatch(EZC::VectorPairU& coords,
+Vector2u getBestStreamMatch(hyperC::VectorPairU& coords,
                             _2Dstream& stream,
                             const std::string& target,
                             const unsigned char& params = CMP_STR_DEFAULT | CMP_STR_SW,
                             const float& threshold = 0.5f);
-void getBestStreamMatchCoords(EZC::VectorPairU& coords, _2Dstream& stream, const std::string& target);
+void getBestStreamMatchCoords(hyperC::VectorPairU& coords, _2Dstream& stream, const std::string& target);
 
 bool filterStreamMatch(std::vector<std::string>& prompt, _2Dstream& stream, bool getMatches = true);
 bool checkAnyStreamMatch(std::vector<std::string>& query, _2Dstream& stream, bool getMatches = false);
@@ -324,9 +324,9 @@ bool checkAnyStreamMatch(std::vector<std::string>& query, _2Dstream& stream, boo
 uint8_t getSearchOrientation(const std::string& query, _2Dstream& dataSource);
 
 // Assess alignment of coordinates given back by a stream search query
-uint8_t assessCoordAlignment(const EZC::VectorPairU& coords, _2Dstream& dataSource); // Relative to global boundaries
-uint8_t assessCoordAlignment(const EZC::VectorPairU& inCoords, const EZC::VectorPairU& outCoords); // Relative to other coordinates
-uint8_t assessCoordAlignment(const EZC::VectorPairU& coords); // Relative to self
+uint8_t assessCoordAlignment(const hyperC::VectorPairU& coords, _2Dstream& dataSource); // Relative to global boundaries
+uint8_t assessCoordAlignment(const hyperC::VectorPairU& inCoords, const hyperC::VectorPairU& outCoords); // Relative to other coordinates
+uint8_t assessCoordAlignment(const hyperC::VectorPairU& coords); // Relative to self
 
 // Data visualization
 

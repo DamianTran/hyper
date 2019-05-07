@@ -31,7 +31,7 @@
 #include <map>
 #include <unordered_map>
 
-namespace EZC
+namespace hyperC
 {
 
 /** HTML escape character table from 'https://www.werockyourweb.com/html-escape-characters/' */

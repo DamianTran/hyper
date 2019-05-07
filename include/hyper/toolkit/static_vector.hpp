@@ -1,12 +1,12 @@
 #pragma once
 
-#ifndef EZC_STATIC_VECTOR
-#define EZC_STATIC_VECTOR
+#ifndef HYPER_STATIC_VECTOR
+#define HYPER_STATIC_VECTOR
 
 #include <vector>
 #include <iostream>
 
-namespace EZC
+namespace hyperC
 {
 
 /** Iterator class for static vector container */
@@ -223,4 +223,4 @@ public:
 
 }
 
-#endif // EZC_STATIC_VECTOR
+#endif // HYPER_STATIC_VECTOR

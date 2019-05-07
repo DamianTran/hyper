@@ -30,9 +30,9 @@
 #include <vector>
 #include <thread>
 
-#include "EZC/toolkit/html.hpp"
+#include "hyper/toolkit/html.hpp"
 
-namespace EZC
+namespace hyperC
 {
 
 /** Basic web page class with auto-assembly */

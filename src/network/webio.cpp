@@ -18,10 +18,10 @@
 
 ////////////////////////////////////////////////////////////////  **/
 
-#include "EZC/network/webio.hpp"
-#include "EZC/toolkit/html.hpp"
-#include "EZC/toolkit/string.hpp"
-#include "EZC/toolkit/filesystem.hpp"
+#include "hyper/network/webio.hpp"
+#include "hyper/toolkit/html.hpp"
+#include "hyper/toolkit/string.hpp"
+#include "hyper/toolkit/filesystem.hpp"
 
 #include <stdio.h>
 #include <unistd.h>
@@ -33,7 +33,7 @@
 namespace fs = boost::filesystem;
 using namespace std;
 
-namespace EZC
+namespace hyperC
 {
 
 const vector<string> description_attributes = {

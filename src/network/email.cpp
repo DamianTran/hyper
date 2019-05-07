@@ -18,7 +18,7 @@
 
 ////////////////////////////////////////////////////////////////  **/
 
-#include "EZC/network/email.hpp"
+#include "hyper/network/email.hpp"
 #include <ctime>
 #include <iomanip>
 #include <iostream>

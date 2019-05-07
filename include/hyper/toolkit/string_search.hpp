@@ -28,10 +28,10 @@
 #include <map>
 #include <unistd.h>
 
-#include "EZC/toolkit/clustered_vector.hpp"
-#include "EZC/toolkit/string.hpp"
+#include "hyper/toolkit/clustered_vector.hpp"
+#include "hyper/toolkit/string.hpp"
 
-namespace EZC
+namespace hyperC
 {
 
 template<class string_container_t, typename string_t>

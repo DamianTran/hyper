@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef EZC_TIME
-#define EZC_TIME
+#ifndef hyper_TIME
+#define hyper_TIME
 
 #include <chrono>
 #include <ctime>
@@ -14,14 +14,14 @@
 #include <vector>
 #include <cstdlib>
 
-#define YEARS(N)        EZC::TimePoint( N, 0, 0, 0, 0, 0 )
-#define MONTHS(N)       EZC::TimePoint( 0, N, 0, 0, 0, 0 )
-#define DAYS(N)         EZC::TimePoint( 0, 0, N, 0, 0, 0 )
-#define HOURS(N)        EZC::TimePoint( 0, 0, 0, N, 0, 0 )
-#define MINUTES(N)      EZC::TimePoint( 0, 0, 0, 0, N, 0 )
-#define SECONDS(N)      EZC::TimePoint( 0, 0, 0, 0, 0, N )
+#define YEARS(N)        hyperC::TimePoint( N, 0, 0, 0, 0, 0 )
+#define MONTHS(N)       hyperC::TimePoint( 0, N, 0, 0, 0, 0 )
+#define DAYS(N)         hyperC::TimePoint( 0, 0, N, 0, 0, 0 )
+#define HOURS(N)        hyperC::TimePoint( 0, 0, 0, N, 0, 0 )
+#define MINUTES(N)      hyperC::TimePoint( 0, 0, 0, 0, N, 0 )
+#define SECONDS(N)      hyperC::TimePoint( 0, 0, 0, 0, 0, N )
 
-#define EPOCH_TIME      EZC::TimePoint(2018, 9, 16, 0, 0, 0)
+#define EPOCH_TIME      hyperC::TimePoint(2018, 9, 16, 0, 0, 0)
 
 #define TIME_NOW                        std::chrono::high_resolution_clock::now()
 #define CLOCK_NOW                       std::chrono::system_clock::to_time_t(TIME_NOW)
@@ -29,7 +29,7 @@
 
 #define DURATION(t0, t1)                std::chrono::duration<float>(t1 - t0).count()
 
-namespace EZC{
+namespace hyperC{
 
 // Time scales used for calendar and other time-tracking apps
 
@@ -275,4 +275,4 @@ struct TimeLog : public std::vector<TimePoint>{
 
 }
 
-#endif // EZC_TIME
+#endif // hyper_TIME

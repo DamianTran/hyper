@@ -1,10 +1,10 @@
-#include "EZC/toolkit/data_stream.hpp"
-#include "EZC/toolkit/string.hpp"
-#include "EZC/toolkit/string_search.hpp"
+#include "hyper/toolkit/data_stream.hpp"
+#include "hyper/toolkit/string.hpp"
+#include "hyper/toolkit/string_search.hpp"
 
 using namespace std;
 
-namespace EZC
+namespace hyperC
 {
 
 _1Dstream::_1Dstream(const _2Dstream& dataset, const unsigned int& index, const bool& row):
@@ -457,7 +457,7 @@ _2Dstream::_2Dstream(const _2Dstream& other):
 
     if(other.search_index)
     {
-        search_index = new EZC::tree_vector<char, coord_string>(*other.search_index);
+        search_index = new hyperC::tree_vector<char, coord_string>(*other.search_index);
     }
     else
     {
@@ -507,7 +507,7 @@ _2Dstream& _2Dstream::operator=(const _2Dstream& other)
 
     if(other.search_index)
     {
-        search_index = new EZC::tree_vector<char, coord_string>(*other.search_index);
+        search_index = new hyperC::tree_vector<char, coord_string>(*other.search_index);
     }
     else
     {

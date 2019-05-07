@@ -12,7 +12,7 @@
 #include <windows.h>
 #endif
 
-namespace EZC
+namespace hyperC
 {
 
 typedef std::map<std::string, std::string> arg_map;

@@ -23,7 +23,7 @@
 #ifndef EZ_DOCX
 #define EZ_DOCX
 
-#include "EZC/toolkit/zip.hpp"
+#include "hyper/toolkit/zip.hpp"
 
 #include <map>
 #include <string>
