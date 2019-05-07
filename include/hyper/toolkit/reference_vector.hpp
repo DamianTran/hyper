@@ -106,18 +106,18 @@ public:
     ref_reverse_iterator(std::reference_wrapper<T>* o_ptr = NULL):
         ref_iterator<T>(o_ptr){ }
 
-    ref_reverse_iterator<T>&        operator=(const std::reference_wrapper<T>* o_ptr){ this->_ptr = o_ptr; return *this; }
+    ref_reverse_iterator<T>&        operator=(const std::reference_wrapper<T>* o_ptr){ this->ptr = o_ptr; return *this; }
 
-    ref_reverse_iterator<T>&        operator+=(const ptrdiff_t& movement){ this->_ptr -= movement; return *this; }
-    ref_reverse_iterator<T>&        operator-=(const ptrdiff_t& movement){ this->_ptr += movement; return *this; }
-    ref_reverse_iterator<T>&        operator++(){ --this->_ptr; return *this; }
-    ref_reverse_iterator<T>&        operator--(){ ++this->_ptr; return *this; }
-    ref_reverse_iterator<T>         operator++(int){ auto cpy(*this); ++this->_ptr; return cpy; }
-    ref_reverse_iterator<T>         operator--(int){ auto cpy(*this); --this->_ptr; return cpy; }
+    ref_reverse_iterator<T>&        operator+=(const ptrdiff_t& movement){ this->ptr -= movement; return *this; }
+    ref_reverse_iterator<T>&        operator-=(const ptrdiff_t& movement){ this->ptr += movement; return *this; }
+    ref_reverse_iterator<T>&        operator++(){ --this->ptr; return *this; }
+    ref_reverse_iterator<T>&        operator--(){ ++this->ptr; return *this; }
+    ref_reverse_iterator<T>         operator++(int){ auto cpy(*this); ++this->ptr; return cpy; }
+    ref_reverse_iterator<T>         operator--(int){ auto cpy(*this); --this->ptr; return cpy; }
     ref_reverse_iterator<T>         operator+(const ptrdiff_t& movement) const{ auto other(*this); other += movement; return other; }
     ref_reverse_iterator<T>         operator-(const ptrdiff_t& movement) const{ auto other(*this); other -= movement; return other; }
 
-    ptrdiff_t                       operator-(const ref_reverse_iterator<T>& other) const{ return std::distance(this->_ptr, other.ptr); }
+    ptrdiff_t                       operator-(const ref_reverse_iterator<T>& other) const{ return std::distance(this->ptr, other.ptr); }
 
 };
 
