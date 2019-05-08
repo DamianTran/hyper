@@ -34,20 +34,27 @@
 
 #define __zlib_check_err(msg) { \
     if (err != Z_OK) { \
-        std::cerr << msg << " error: " << err << std::endl; \
+        cerr << msg << " error: " << err << endl; \
         exit(1); \
     } \
 }
 
 using namespace boost::filesystem;
+using namespace std;
 
 namespace hyperC
 {
 
 const static size_t zip_inflate_buf_size = 16384;
 
-std::ostream& print_archive(std::ostream& output, const std::string& filename)
+ostream& print_archive(ostream& output, const string& filename)
 {
+
+    if(access(filename.c_str(), F_OK))
+    {
+        return output << "File \"" << filename << "\" does not exist\n";
+    }
+
     int err, len;
 
     struct zip* archive;
@@ -73,11 +80,15 @@ std::ostream& print_archive(std::ostream& output, const std::string& filename)
     return output;
 }
 
-bool extract(const std::string& filename,
-             const std::string& outPath)
+bool extract(const string& filename,
+             const string& outPath)
 {
 
-    if(access(filename.c_str(), F_OK)) return false;
+    if(access(filename.c_str(), F_OK))
+    {
+        cout << "Extraction failed (file \"" << filename << "\" does not exist)\n";
+        return false;
+    }
 
     int err, len, fd;
     long long tSIZE;
@@ -86,7 +97,7 @@ bool extract(const std::string& filename,
     struct zip_file* zf;
     struct zip_stat sb;
 
-    std::string archive_path = outPath;
+    string archive_path = outPath;
     if(outPath.empty()) archive_path = path(filename).parent_path().string()
                                            + "/" + path(filename).stem().string() + "/";
     else if(archive_path.back() != '/') archive_path.append("/");
@@ -104,7 +115,7 @@ bool extract(const std::string& filename,
     {
         if(zip_stat_index(archive, i, 0, &sb) == 0)  // Valid archive item
         {
-            std::cout << "Extracting " << sb.name << " (" << sb.size << "b)\n";
+            cout << "Extracting " << sb.name << " (" << sb.size << "b)\n";
             path sub_file(archive_path + sb.name);
             create_directories(sub_file.parent_path());
 
@@ -120,7 +131,7 @@ bool extract(const std::string& filename,
 
             if((len = zip_fread(zf, buf, sb.size)) < 0)
             {
-                std::cout << "Failed to extract " << sb.name << "...\n";
+                cout << "Failed to extract " << sb.name << "...\n";
                 continue;
             }
 
@@ -137,14 +148,14 @@ bool extract(const std::string& filename,
     return true;
 }
 
-bool archive(const std::string& directory,
-             const std::string& outName)
+bool archive(const string& directory,
+             const string& outName)
 {
 
     if(!is_directory(directory)) return false;
     int errorp;
 
-    std::string archive_path = outName;
+    string archive_path = outName;
     if(archive_path.empty())
     {
         archive_path = path(directory).parent_path().string() + "/" +
@@ -167,13 +178,13 @@ bool archive(const std::string& directory,
     {
         if((source = zip_source_file(zipper, file.string().c_str(), 0,0)) == nullptr)
         {
-            std::cout << "Failed to source: " << file.string() << '\n';
+            cout << "Failed to source: " << file.string() << '\n';
             continue;
         }
-        std::cout << "Archiving: " << file.string() << '\n';
+        cout << "Archiving: " << file.string() << '\n';
         if(zip_file_add(zipper, file.string().substr(L + 1).c_str(), source, ZIP_FL_ENC_UTF_8) < 0)
         {
-            std::cout << "Failed to add to archive: " << file.string() << '\n';
+            cout << "Failed to add to archive: " << file.string() << '\n';
             zip_source_free(source);
             continue;
         }
@@ -187,7 +198,7 @@ bool archive(const std::string& directory,
 
 }
 
-size_t decompress(const std::string& filename,
+size_t decompress(const string& filename,
                 void** output)
 {
     unsigned char* data;
@@ -247,7 +258,7 @@ size_t decompress(const std::string& filename,
 
             if(!output_data)
             {
-                std::cout << "Error: failed to reallocate\n";
+                cout << "Error: failed to reallocate\n";
                 delete[] d_buffer;
                 break;
             }
@@ -291,8 +302,8 @@ size_t decompress(const std::string& filename,
 
 }
 
-bool decompress(const std::string& filename,
-                const std::string& outFileName)
+bool decompress(const string& filename,
+                const string& outFileName)
 {
 
     unsigned char* data;
