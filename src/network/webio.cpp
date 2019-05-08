@@ -481,16 +481,17 @@ bool downloadFile(const string& URL,
 {
 
     unsigned char* data;
-    size_t L;
 
-    if(L = getNetworkData((void**)&data, URL))
+    size_t L = getNetworkData((void**)&data, URL);
+
+    if(L > 0)
     {
 
         FILE* outFILE = fopen(filename.c_str(), "wb");
 
         if(!outFILE)
         {
-            cout << "Error: failed to write to hard drive\n";
+            cout << "Error: failed to write to file: \"" << filename << "\"\n";
             return false;
         }
 

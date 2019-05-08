@@ -190,7 +190,7 @@ bool archive(const std::string& directory,
 size_t decompress(const std::string& filename,
                 void** output)
 {
-    unsigned char* data;
+    unsigned char* data = nullptr;
     size_t dataSIZE = getFileData(filename, (void**)&data);
 
     if(!dataSIZE || !data) return 0;
@@ -295,24 +295,29 @@ bool decompress(const std::string& filename,
                 const std::string& outFileName)
 {
 
-    unsigned char* data;
+    unsigned char* data = nullptr;
     size_t fileSIZE = decompress(filename, (void**)&data);
 
-    if(!fileSIZE)
+    if(data)
     {
+        if(!fileSIZE)
+        {
+            delete[] data;
+            return false;
+        }
+
+        if(!saveFileData(data, fileSIZE, outFileName))
+        {
+            delete[] data;
+            return false;
+        }
+
         delete[] data;
-        return false;
+
+        return true;
     }
 
-    if(!saveFileData(data, fileSIZE, outFileName))
-    {
-        delete[] data;
-        return false;
-    }
-
-    delete[] data;
-
-    return true;
+    return false;
 
 }
 
