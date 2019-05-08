@@ -1,6 +1,7 @@
-#include "hyper/stream_algorithm.hpp"
+#include "hyper/toolkit/stream_algorithm.hpp"
 
-using namespace hyperC;
+namespace hyperC
+{
 
 void getValues(std::vector<float>& output, const _1Dstream& stream)
 {
@@ -308,5 +309,7 @@ float stdev(const _2Dstream& stream, float* avg)
     }
 
     return sqrt(output/N);
+
+}
 
 }

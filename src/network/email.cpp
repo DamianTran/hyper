@@ -429,10 +429,8 @@ bool email_info::send()
 
         curl_easy_setopt(curl, CURLOPT_USE_SSL, CURLUSESSL_ALL);
 
-        #ifndef __APPLE__
         curl_easy_setopt(curl, CURLOPT_CAPATH, "ssl/certs/");
         curl_easy_setopt(curl, CURLOPT_CAINFO, "ssl/certs/ca-bundle.crt");
-        #endif
 
         res = curl_easy_perform(curl);
 
