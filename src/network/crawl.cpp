@@ -8,7 +8,7 @@
 
 #include <boost/filesystem.hpp>
 
-#define hyper_SPIDER_CONSTRUCT        \
+#define HYPER_SPIDER_CONSTRUCT        \
     bSuccess(false),                \
     bVerbose(false),                \
     bStayOnDomain(false),           \
@@ -23,10 +23,10 @@ namespace hyperC
 {
 
 Spider::Spider():
-    hyper_SPIDER_CONSTRUCT{ }
+    HYPER_SPIDER_CONSTRUCT{ }
 
 Spider::Spider(const string& URL):
-    hyper_SPIDER_CONSTRUCT
+    HYPER_SPIDER_CONSTRUCT
 {
     go_to(URL);
 }

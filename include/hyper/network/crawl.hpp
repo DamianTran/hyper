@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef hyper_CRAWL
-#define hyper_CRAWL
+#ifndef HYPER_CRAWL
+#define HYPER_CRAWL
 
 #include <string>
 #include <vector>
@@ -159,4 +159,4 @@ int WebCrawlProgram(int argc = 0, char** argv = nullptr);
 
 }
 
-#endif // hyper_CRAWL
+#endif // HYPER_CRAWL

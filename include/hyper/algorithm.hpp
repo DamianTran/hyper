@@ -20,8 +20,8 @@
 
 #pragma once
 
-#ifndef hyper_ALGORITHM
-#define hyper_ALGORITHM
+#ifndef HYPER_ALGORITHM
+#define HYPER_ALGORITHM
 
 #include <cstdlib>
 #include <string>
@@ -1167,6 +1167,8 @@ void append(VectorPair<T1>& output, const VectorPair<T2>& input)
     }
 
 }
+
+
 
 typedef VectorPair<unsigned int> VectorPairU;
 
@@ -3856,4 +3858,4 @@ inline float getDuration(const std::chrono::high_resolution_clock::time_point& t
 
 
 
-#endif // hyper_ALGORITHM
+#endif // HYPER_ALGORITHM

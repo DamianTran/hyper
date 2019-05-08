@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef hyper_STATIC_VECTOR
-#define hyper_STATIC_VECTOR
+#ifndef HYPER_STATIC_VECTOR
+#define HYPER_STATIC_VECTOR
 
 #include <vector>
 #include <iostream>
@@ -355,4 +355,4 @@ public:
 
 }
 
-#endif // hyper_STATIC_VECTOR
+#endif // HYPER_STATIC_VECTOR

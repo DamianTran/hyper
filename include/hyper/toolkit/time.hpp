@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef hyper_TIME
-#define hyper_TIME
+#ifndef HYPER_TIME
+#define HYPER_TIME
 
 #include <chrono>
 #include <ctime>
@@ -276,4 +276,4 @@ struct TimeLog : public std::vector<TimePoint>{
 
 }
 
-#endif // hyper_TIME
+#endif // HYPER_TIME

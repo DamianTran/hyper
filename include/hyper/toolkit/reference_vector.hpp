@@ -134,8 +134,8 @@ class reference_vector : public refv_t<T>
 {
 public:
 
-    template<template<typename...> typename container_t>
-    reference_vector(container_t<T>& other)
+    template<typename container_t>
+    reference_vector(container_t& other)
     {
         for(auto& item : other)
         {
