@@ -48,79 +48,6 @@
 namespace hyperC
 {
 
-template<typename T>
-class ref_iterator : public std::iterator<std::random_access_iterator_tag,
-                                            std::reference_wrapper<T>,
-                                            ptrdiff_t,
-                                            std::reference_wrapper<T>*,
-                                            std::reference_wrapper<T>&>
-{
-public:
-
-    ref_iterator(std::reference_wrapper<T>* o_ptr = NULL):
-        ptr(o_ptr){ }
-
-    ref_iterator<T>&        operator=(const std::reference_wrapper<T>* o_ptr){ ptr = o_ptr; return *this; }
-
-    operator                bool() const{ return ptr; }
-
-    bool                    operator==(const ref_iterator<T>& other) const{ return ptr == other.ptr; }
-    bool                    operator!=(const ref_iterator<T>& other) const{ return ptr != other.ptr; }
-
-    bool                    operator==(const T* other) const{ return &ptr->get() == other; }
-    bool                    operator!=(const T* other) const{ return &ptr->get() != other; }
-
-    ref_iterator<T>&        operator+=(const ptrdiff_t& movement){ ptr += movement; return *this; }
-    ref_iterator<T>&        operator-=(const ptrdiff_t& movement){ ptr -= movement; return *this; }
-    ref_iterator<T>&        operator++(){ ++ptr; return *this; }
-    ref_iterator<T>&        operator--(){ --ptr; return *this; }
-    ref_iterator<T>         operator++(int){ auto cpy(*this); ++ptr; return cpy; }
-    ref_iterator<T>         operator--(int){ auto cpy(*this); --ptr; return cpy; }
-    ref_iterator<T>         operator+(const ptrdiff_t& movement) const{ auto other(*this); other += movement; return other; }
-    ref_iterator<T>         operator-(const ptrdiff_t& movement) const{ auto other(*this); other -= movement; return other; }
-
-    ptrdiff_t               operator-(const ref_iterator<T>& other) const{ return std::distance(other.ptr, ptr); }
-
-    T&                      operator*(){ return ptr->get(); }
-    const T&                operator*() const{ return ptr->get(); }
-
-    std::reference_wrapper<T>*                  getPtr() const{ return ptr; }
-    const std::reference_wrapper<T>*            getConstPtr() const{ return ptr; }
-
-    friend std::ostream& operator<<(std::ostream& output, const ref_iterator<T>& itr)
-    {
-        return output << &itr.ptr->get();
-    }
-
-protected:
-
-    std::reference_wrapper<T>* ptr;
-
-};
-
-template<typename T>
-class ref_reverse_iterator : public ref_iterator<T>
-{
-public:
-
-    ref_reverse_iterator(std::reference_wrapper<T>* o_ptr = NULL):
-        ref_iterator<T>(o_ptr){ }
-
-    ref_reverse_iterator<T>&        operator=(const std::reference_wrapper<T>* o_ptr){ this->ptr = o_ptr; return *this; }
-
-    ref_reverse_iterator<T>&        operator+=(const ptrdiff_t& movement){ this->ptr -= movement; return *this; }
-    ref_reverse_iterator<T>&        operator-=(const ptrdiff_t& movement){ this->ptr += movement; return *this; }
-    ref_reverse_iterator<T>&        operator++(){ --this->ptr; return *this; }
-    ref_reverse_iterator<T>&        operator--(){ ++this->ptr; return *this; }
-    ref_reverse_iterator<T>         operator++(int){ auto cpy(*this); ++this->ptr; return cpy; }
-    ref_reverse_iterator<T>         operator--(int){ auto cpy(*this); --this->ptr; return cpy; }
-    ref_reverse_iterator<T>         operator+(const ptrdiff_t& movement) const{ auto other(*this); other += movement; return other; }
-    ref_reverse_iterator<T>         operator-(const ptrdiff_t& movement) const{ auto other(*this); other -= movement; return other; }
-
-    ptrdiff_t                       operator-(const ref_reverse_iterator<T>& other) const{ return std::distance(this->ptr, other.ptr); }
-
-};
-
 /////////////////////////////////////////////////////////////////////////////
 
 /* Vector definition */
@@ -144,8 +71,6 @@ public:
     }
 
     reference_vector() = default;
-
-    #ifdef __APPLE__
 
     class iterator_ptr
     {
@@ -266,16 +191,17 @@ public:
 
     };
 
-    #else
-    typedef ref_iterator<T>                         iterator;
-    typedef ref_reverse_iterator<T>                 reverse_iterator;
-    #endif
-
     iterator                        begin()         { return iterator(this->data()); }
     iterator                        end()           { return iterator(this->data() + this->size()); }
 
+    const_iterator                  begin()         const { return const_iterator(this->data()); }
+    const_iterator                  end()           const { return const_iterator(this->data() + this->size()); }
+
     reverse_iterator                rbegin()        { return reverse_iterator(this->data() + this->size() - 1); }
     reverse_iterator                rend()          { return reverse_iterator(this->data() - 1); }
+
+    const_reverse_iterator          rbegin()        const { return const_reverse_iterator(this->data() + this->size() - 1); }
+    const_reverse_iterator          rend()          const { return const_reverse_iterator(this->data() - 1); }
 
     inline const T&                 operator[](const size_t& index) const
     {
@@ -321,11 +247,9 @@ public:
 
     inline void erase(const iterator& position)
     {
-        #ifdef __APPLE__
+
         refv_t<T>::erase(refv_t<T>::begin() + distance(begin(), position));
-        #else
-        refv_t<T>::erase(refv_t<T>::begin() + std::distance(begin(), position));
-        #endif
+
     }
 
     inline void push_back(T& newItem)

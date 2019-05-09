@@ -1457,17 +1457,20 @@ bool _2Dstream::find(VectorPairU& output, const string& target, const float& siz
 
             unsigned int matchCoord = 0;
             unsigned int initCoord = 0;
-            unsigned int sizeFactor = L/size_threshold;
-            unsigned int matchFactor = L*match_threshold;
+
             unsigned int bufferSize = 0;
 
             char* c = readBuffer;
 
             // Initialize the trim
 
-            while(matchCoord < L)
+            while((matchCoord < L) && (L > 0))
             {
-                if(isSpecial(target[matchCoord])) ++matchCoord;
+                if(isSpecial(target[matchCoord]))
+                {
+                    ++matchCoord;
+                    --L;
+                }
                 else
                 {
                     initCoord = matchCoord;
@@ -1476,7 +1479,7 @@ bool _2Dstream::find(VectorPairU& output, const string& target, const float& siz
                 }
             }
 
-            while(matchCoord > initCoord + 1)
+            while((matchCoord > initCoord + 1) && (L > 0))
             {
                 if(isSpecial(target[matchCoord]))
                 {
@@ -1498,12 +1501,23 @@ bool _2Dstream::find(VectorPairU& output, const string& target, const float& siz
 
             matchCoord = initCoord;
 
+            unsigned int sizeFactor;
+            if(L > 3) sizeFactor = L/size_threshold;
+            else sizeFactor = L;
+
+            unsigned int matchFactor;
+            if(L > 3) matchFactor = L*match_threshold;
+            else matchFactor = L;
+
             fseek(stream, 0, SEEK_SET);
 
             // Perform the search
 
+            if(!L) return false;
+
             for(; coord < S; ++coord)
             {
+
                 if(bufferPos <= coord)
                 {
                     bufferSize = STREAM_SCAN_BUFFER_SIZE > streamSize - coord ? streamSize - coord : STREAM_SCAN_BUFFER_SIZE;
@@ -1532,6 +1546,7 @@ bool _2Dstream::find(VectorPairU& output, const string& target, const float& siz
                 }
                 else if(matchCoord >= matchFactor)
                 {
+
                     if(getStrSize(c) <= sizeFactor)
                     {
                         output.x.push_back(0);
@@ -1540,16 +1555,18 @@ bool _2Dstream::find(VectorPairU& output, const string& target, const float& siz
                         {
                             ++output.y.back();
                         }
-                        while((output.x.back() < rowSize(output.y.back()) - 1) && coord > indexPos[output.y.back()][output.x.back()+1])
+                        while((output.x.back() < rowSize(output.y.back()) - 1) && (coord > indexPos[output.y.back()][output.x.back()+1]))
                         {
                             ++output.x.back();
                         }
                     }
+
                     matchCoord = initCoord;
                 }
                 else matchCoord = initCoord;
                 ++c;
             }
+
         }
 
     }
