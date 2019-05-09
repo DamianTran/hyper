@@ -83,22 +83,25 @@ void getFilesInDir(PathList& output,
 {
     if(!fs::is_directory(directory)) return;
 
-    fs::directory_iterator end_itr;
-    for(fs::directory_iterator itr(directory);
-            itr != end_itr; ++itr)
+    try
     {
-        if(fs::is_directory(itr->status()))
+        fs::directory_iterator end_itr;
+        for(fs::directory_iterator itr(directory);
+                itr != end_itr; ++itr)
         {
-            getFilesInDir(output, itr->path(), extension);
+            if(fs::is_directory(itr->status()))
+            {
+                getFilesInDir(output, itr->path(), extension);
+            }
+            else if((!extension.empty()) &&
+                    (itr->path().extension().string().find(extension) <
+                     itr->path().extension().string().size()))
+            {
+                output.push_back(itr->path());
+            }
+            else if(extension.size() < 1) output.push_back(itr->path());
         }
-        else if((!extension.empty()) &&
-                (itr->path().extension().string().find(extension) <
-                 itr->path().extension().string().size()))
-        {
-            output.push_back(itr->path());
-        }
-        else if(extension.size() < 1) output.push_back(itr->path());
-    }
+    }catch(...){ }
 }
 
 void getFilesInDir(PathList& output,
@@ -107,22 +110,25 @@ void getFilesInDir(PathList& output,
 {
     if(!fs::is_directory(directory)) return;
 
-    fs::directory_iterator end_itr;
-    for(fs::directory_iterator itr(directory);
-            itr != end_itr; ++itr)
+    try
     {
-        if(fs::is_directory(itr->status()))
+        fs::directory_iterator end_itr;
+        for(fs::directory_iterator itr(directory);
+                itr != end_itr; ++itr)
         {
-            getFilesInDir(output, itr->path(), extensions);
+            if(fs::is_directory(itr->status()))
+            {
+                getFilesInDir(output, itr->path(), extensions);
+            }
+            else if((!extensions.empty()) &&
+                    cmpStringToList(itr->path().extension().string(),
+                                    extensions,
+                                    CMP_STR_CASE_INSENSITIVE | CMP_STR_SIZE_INSENSITIVE))
+            {
+                output.push_back(itr->path());
+            }
         }
-        else if((!extensions.empty()) &&
-                cmpStringToList(itr->path().extension().string(),
-                                extensions,
-                                CMP_STR_CASE_INSENSITIVE | CMP_STR_SIZE_INSENSITIVE))
-        {
-            output.push_back(itr->path());
-        }
-    }
+    }catch(...){ }
 }
 
 string getBestPathMatch(const string& query, const fs::path& directory,

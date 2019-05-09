@@ -523,10 +523,7 @@ void _2Dstream::index(const int& max_levels)
 
     if(search_index)
     {
-        if(verbose)
-        {
-            cout << "Stream is already indexed\n";
-        }
+        cout << "Stream is already indexed\n";
         return;
     }
 
@@ -550,7 +547,7 @@ void _2Dstream::index(const int& max_levels)
             for(x = 0; (x < rowSize(y)) && (x < ncol()); ++x)
             {
                 string str = getString(x, y);
-                if(!isNumeric(str))
+                if(!str.empty() && !isNumeric(str))
                 {
                     to_lowercase(str);
                     coord_index.emplace_back(str, x, y);
@@ -564,12 +561,9 @@ void _2Dstream::index(const int& max_levels)
             reference_vector<coord_string> refs(coord_index);
             search_index = new tree_vector<char, coord_string>(refs, max_levels);
 
-            if(verbose)
-            {
-                cout << " success\n";
-            }
+            cout << " success\n";
         }
-        else if(verbose)
+        else
         {
             cout << " failed\n";
         }
