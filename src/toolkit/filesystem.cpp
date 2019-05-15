@@ -546,4 +546,15 @@ unsigned int getMatchingIndex(const fs::path& focus,
     else return UINT_MAX;
 }
 
+std::string getUserDataPath()
+{
+#ifdef __WIN32 || defined _WIN32 || defined WIN32
+    return string(getenv("USERPROFILE"));
+#elif defined __APPLE__
+    return string(getenv("HOME"));
+#else
+    return string();
+#endif
+}
+
 }

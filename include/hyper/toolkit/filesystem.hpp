@@ -230,5 +230,7 @@ void mread(map_t<key_t, single_t>& list, FILE* inFILE)
     }
 }
 
+std::string getUserDataPath();
+
 }
 #endif // EZ_FILESYSTEM
