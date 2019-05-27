@@ -208,8 +208,8 @@ void vread(vector_t& list, FILE* inFILE)
     }
 }
 
-template<template<class, class> typename map_t, typename key_t, typename single_t>
-void mread(map_t<key_t, single_t>& list, FILE* inFILE)
+template<typename map_t>
+void mread(map_t& list, FILE* inFILE)
 {
     size_t L;
     fread(&L, 1, sizeof(L), inFILE);
@@ -217,8 +217,8 @@ void mread(map_t<key_t, single_t>& list, FILE* inFILE)
     if(L)
     {
 
-        key_t first;
-        single_t second;
+        typename map_t::key_type first;
+        typename map_t::mapped_type second;
 
         for(size_t i = 0; i < L; ++i)
         {

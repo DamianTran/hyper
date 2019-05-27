@@ -74,6 +74,8 @@ bool Spider::go_to(const string& URL)
                 cout << "Revisited cached website: " << history[history_index].getURL() << '\n';
             }
 
+            ++i;
+
             bCached = true;
         }
     }
@@ -328,8 +330,14 @@ bool Spider::find_pages(map<string, string>& output,
             cout << "Initiating search branch with depth: " << search_depth << '\n';
         }
 
+        int index = 0;
+        int max_index = links.size();
+
         for(auto& pair : links)
         {
+
+            cout << "Searching link " << index + 1 << "/" << max_index << '\n';
+            ++index;
 
             string fileExt = fs::path(pair.first).extension().string();
 
