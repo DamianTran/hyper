@@ -1,6 +1,6 @@
 /** ////////////////////////////////////////////////////////////////
 
-    *** EZ-C++ - A simplified C++ experience ***
+    *** Hyper C++ - A simplified C++ experience ***
 
         Yet (another) open source library for C++
 

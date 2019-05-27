@@ -1,6 +1,6 @@
 /** ////////////////////////////////////////////////////////////////
 
-    *** EZ-C++ - A simplified C++ experience ***
+    *** Hyper C++ - A simplified C++ experience ***
 
         Yet (another) open source library for C++
 
@@ -28,6 +28,8 @@
 
 #if defined WIN32 || defined _WIN32
 #include <windows.h>
+#elif defined __APPLE__
+#include <mach-o/dyld.h>
 #endif
 
 namespace fs = boost::filesystem;
@@ -546,7 +548,7 @@ unsigned int getMatchingIndex(const fs::path& focus,
     else return UINT_MAX;
 }
 
-std::string getUserDataPath()
+string getUserDataPath()
 {
 #ifdef __WIN32 || defined _WIN32 || defined WIN32
     return string(getenv("USERPROFILE"));
@@ -555,6 +557,30 @@ std::string getUserDataPath()
 #else
     return string();
 #endif
+}
+
+string getExecutablePath()
+{
+
+    unsigned int buffer_size = 1024;
+    char pbuffer[buffer_size + 1];
+    pbuffer[buffer_size] = '\0';
+
+#ifdef __WIN32 || defined _WIN32 || defined WIN32
+    GetModuleFilename(NULL, pbuffer, buffer_size);
+#elif defined __APPLE__
+    _NSGetExecutablePath(pbuffer, &buffer_size);
+#endif
+
+    string output(pbuffer);
+
+    return output;
+
+}
+
+string getExecutableDirectory()
+{
+    return fs::path(getExecutablePath()).parent_path().string();
 }
 
 }

@@ -1,6 +1,6 @@
 /** ////////////////////////////////////////////////////////////////
 
-    *** EZ-C++ - A simplified C++ experience ***
+    *** Hyper C++ - A simplified C++ experience ***
 
         Yet (another) open source library for C++
 
@@ -231,6 +231,8 @@ void mread(map_t& list, FILE* inFILE)
 }
 
 std::string getUserDataPath();
+std::string getExecutablePath();
+std::string getExecutableDirectory();
 
 }
 #endif // EZ_FILESYSTEM
