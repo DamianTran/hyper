@@ -120,7 +120,7 @@ inline void fwrite(const bool& data, FILE* outFILE)             { fwrite(&data, 
 
 inline void fwrite(const char* data, FILE* outFILE)
 {
-    size_t L = strlen(data);
+    uint64_t L = strlen(data);
     fwrite(&L, 1, sizeof(L), outFILE);
     fwrite(data, L, sizeof(char), outFILE);
 }
@@ -133,7 +133,7 @@ inline void fwrite(const std::string& data, FILE* outFILE)
 template<typename vector_t>
 void vwrite(const vector_t& list, FILE* outFILE)
 {
-    size_t L = list.size();
+    uint64_t L = list.size();
     fwrite(&L, 1, sizeof(L), outFILE);
     for(auto& item : list)
     {
@@ -144,7 +144,7 @@ void vwrite(const vector_t& list, FILE* outFILE)
 template<typename map_t>
 void mwrite(const map_t& item_map, FILE* outFILE)
 {
-    size_t L = item_map.size();
+    uint64_t L = item_map.size();
     fwrite(&L, 1, sizeof(L), outFILE);
     for(auto& pair : item_map)
     {
@@ -172,7 +172,7 @@ inline void fread(bool& data, FILE* inFILE)             { fread(&data, 1, sizeof
 
 inline void fread(char* data, FILE* inFILE)
 {
-    size_t L;
+    uint64_t L;
     fread(&L, 1, sizeof(L), inFILE);
     data = new char[L + 1];
     data[L] = '\0';
@@ -181,7 +181,7 @@ inline void fread(char* data, FILE* inFILE)
 
 inline void fread(std::string& data, FILE* inFILE)
 {
-    size_t L;
+    uint64_t L;
     fread(&L, 1, sizeof(L), inFILE);
     char* newstr = new char[L + 1];
     newstr[L] = '\0';
@@ -194,7 +194,7 @@ inline void fread(std::string& data, FILE* inFILE)
 template<typename vector_t>
 void vread(vector_t& list, FILE* inFILE)
 {
-    size_t L;
+    uint64_t L;
     fread(&L, 1, sizeof(L), inFILE);
 
     if(L)
@@ -211,7 +211,7 @@ void vread(vector_t& list, FILE* inFILE)
 template<template<class, class> typename map_t, typename key_t, typename single_t>
 void mread(map_t<key_t, single_t>& list, FILE* inFILE)
 {
-    size_t L;
+    uint64_t L;
     fread(&L, 1, sizeof(L), inFILE);
 
     if(L)

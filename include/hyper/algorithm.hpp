@@ -169,14 +169,15 @@ template<typename T> void writeData(const T& data, FILE* output)
 
 template<typename T> void writeVector(const std::vector<T>& V, FILE* output)
 {
-    writeData(V.size(), output);
+    uint64_t L = V.size();
+    fwrite(&L, 1, sizeof(L), output);
     fwrite(V.data(), V.size(), sizeof(T), output);
 }
 
 template<typename T> void writeMatrix(const std::vector<T>& M, FILE* output)
 {
-    size_t L = M.size();
-    fwrite(&L, 1, sizeof(size_t), output);
+    uint64_t L = M.size();
+    fwrite(&L, 1, sizeof(L), output);
     for(auto& V : M)
     {
         writeVector(V, output);
@@ -185,7 +186,8 @@ template<typename T> void writeMatrix(const std::vector<T>& M, FILE* output)
 
 inline void writeString(const std::string& s, FILE* output)
 {
-    writeData(s.size(), output);
+    uint64_t string_size = s.size();
+    fwrite(&string_size, 1, sizeof(string_size), output);
     fwrite(s.c_str(), 1, s.size(), output);
 }
 
@@ -207,8 +209,8 @@ template<typename T> void readData(T& inputVar, FILE* inputFile)
 
 template<typename T> void readVector(std::vector<T>& output, FILE* inputFile)
 {
-    size_t inSIZE;
-    readData(inSIZE, inputFile);
+    uint64_t inSIZE;
+    fread(&inSIZE, 1, sizeof(inSIZE), inputFile);
     T* inputData = new T[inSIZE];
     fread(inputData, inSIZE, sizeof(T), inputFile);
     output.reserve(output.size() + inSIZE);
@@ -224,8 +226,8 @@ template<typename T> void readVector(std::vector<T>& output, FILE* inputFile)
 inline void readString(std::string& output, FILE* inFILE)
 {
     output.clear();
-    size_t inSIZE;
-    readData(inSIZE, inFILE);
+    uint64_t inSIZE;
+    fread(&inSIZE, 1, sizeof(inSIZE), inFILE);
     char* inputData = new char[inSIZE+1];
     inputData[inSIZE] = '\0';
     fread(inputData, 1, inSIZE, inFILE);
@@ -247,8 +249,8 @@ void readData(std::vector<T>& inputVar, FILE* inputFILE)
 inline void readVector(std::vector<std::string>& output, FILE* inFILE)
 {
     output.clear();
-    size_t inSIZE;
-    readData(inSIZE, inFILE);
+    uint64_t inSIZE;
+    fread(&inSIZE, 1, sizeof(inSIZE), inFILE);
     output.reserve(output.size() + inSIZE);
     for(size_t i = 0; i < inSIZE; ++i)
     {
@@ -260,8 +262,8 @@ inline void readVector(std::vector<std::string>& output, FILE* inFILE)
 template<typename T>
 void readMatrix(std::vector<std::vector<T>>& M, FILE* inFILE)
 {
-    size_t L;
-    fread(&L, 1, sizeof(size_t), inFILE);
+    uint64_t L;
+    fread(&L, 1, sizeof(L), inFILE);
     M.resize(L);
     for(auto& V : M)
     {
@@ -271,7 +273,8 @@ void readMatrix(std::vector<std::vector<T>>& M, FILE* inFILE)
 
 inline void writeVector(const std::vector<std::string>& V, FILE* output)
 {
-    writeData(V.size(), output);
+    uint64_t L = V.size();
+    fwrite(&L, 1, sizeof(L), output);
     const c_itr<std::string> itEND = V.end();
     for(c_itr<std::string> it = V.begin(); it != itEND; ++it)
     {
@@ -282,8 +285,8 @@ inline void writeVector(const std::vector<std::string>& V, FILE* output)
 template<typename key_t, typename value_t> void writeMap(const std::map<key_t, value_t>& M, FILE* outFILE)
 {
 
-    size_t L = M.size();
-    fwrite(&L, sizeof(size_t), 1, outFILE);
+    uint64_t L = M.size();
+    fwrite(&L, sizeof(L), 1, outFILE);
     if(L == 0) return;
 
     auto endIT = M.end();
@@ -299,8 +302,8 @@ template<typename key_t, typename value_t> void writeMap(const std::map<key_t, v
 template<typename key_t, typename value_t> void readMap(std::map<key_t, value_t>& M, FILE* inFILE)
 {
 
-    size_t L;
-    fread(&L, sizeof(size_t), 1, inFILE);
+    uint64_t L;
+    fread(&L, sizeof(L), 1, inFILE);
 
     if(L == 0) return;
 
