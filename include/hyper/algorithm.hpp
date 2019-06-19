@@ -3500,11 +3500,24 @@ inline float signal_to_noise(const std::vector<float>& data,
     return (average(sample) - average(rem))/(stdev(rem) + stdev(sample));
 }
 
-inline void least_squares_fit(const std::vector<float>& xV, const std::vector<float>& yV,
-                              float& slopeOutput, float& interceptOutput)
+/** @brief Calculate slope/intercept regression using the least squares method.
+  *
+  * @param xV   Vector of X values.
+  * @param yV   Vector of Y Values.
+  * @param slopeOutput  Variable to store the slope output in.
+  * @param interceptOutput Variable to store the intercept output in. */
+template<typename real_t>
+void least_squares_fit(const std::vector<real_t>& xV, const std::vector<real_t>& yV,
+                              real_t& slopeOutput, real_t& interceptOutput)
 {
 
-    float sumX(0.0f), sumY(0.0f), sumXY(0.0f), sumXsq(0.0f), sumDev = 0.0f, avgX = (average(xV));
+    real_t sumX(0.0f);
+    real_t sumY(0.0f);
+    real_t sumXY(0.0f);
+    real_t sumXsq(0.0f);
+    real_t sumDev = 0.0f;
+    real_t avgX = (average(xV));
+
     unsigned int L = (xV.size() <= yV.size()) ? xV.size() : yV.size(), N = 0;
 
     for(size_t i = 0; i < L; ++i)

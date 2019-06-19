@@ -142,6 +142,38 @@ inline std::string getDurationStr(const std::chrono::duration<float>& duration)
     return getDurationStr(duration.count());
 }
 
+inline std::string getDigitalTime(const float& duration)
+{
+
+    std::stringstream ss;
+
+    int rounded(duration);
+
+    std::string hour_str = std::to_string(rounded / 3600);
+    std::string minute_str = std::to_string((rounded / 60) % 60);
+    std::string second_str = std::to_string(rounded % 60);
+
+    if(hour_str.size() < 2)
+    {
+        hour_str.insert(hour_str.begin(), '0');
+    }
+
+    if(minute_str.size() < 2)
+    {
+        minute_str.insert(minute_str.begin(), '0');
+    }
+
+    if(second_str.size() < 2)
+    {
+        second_str.insert(second_str.begin(), '0');
+    }
+
+    ss << hour_str << ':' << minute_str << ':' << second_str;
+
+    return ss.str();
+
+}
+
 class TimePoint{
 protected:
     std::vector<int> timeInfo;

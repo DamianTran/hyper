@@ -168,6 +168,7 @@ protected:
     bool verbose;
     bool active;                                // Prevent conflicts between separate processes using this stream
     bool imported;                              // Switch access modes if dataset has been loaded into RAM
+    bool bOpen;                                 // Has a connection been established?
 
     std::vector<coord_string> coord_index;
     hyperC::tree_vector<char, coord_string> *       search_index;
@@ -176,6 +177,7 @@ public:
 
     void reset();
     inline void close(){ reset(); }
+    inline const bool& isOpen() const noexcept{ return bOpen; }
 
     void reload();
     void index(const int& max_levels = -1);   // Create a search index to speed up repeated find operations
@@ -266,7 +268,6 @@ public:
     explicit _2Dstream();
     explicit _2Dstream(const std::string& filename, const bool& verbose = true,
                        const std::string& delim = "");
-    explicit _2Dstream(const bool& verbose, const std::string& delim = "\t");
     explicit _2Dstream(std::string filename, hyperC::vMatrix<uint32_t>& indexPos,
                        hyperC::vMatrix<uint16_t>& indexSizes,
                     dimArray& rowSizes, dimArray& rowDataSizes,

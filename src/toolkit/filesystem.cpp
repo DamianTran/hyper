@@ -567,7 +567,7 @@ string getExecutablePath()
     pbuffer[buffer_size] = '\0';
 
 #ifdef __WIN32 || defined _WIN32 || defined WIN32
-    GetModuleFilename(NULL, pbuffer, buffer_size);
+    GetModuleFileName(NULL, pbuffer, buffer_size);
 #elif defined __APPLE__
     _NSGetExecutablePath(pbuffer, &buffer_size);
 #endif

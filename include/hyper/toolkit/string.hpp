@@ -633,7 +633,8 @@ unsigned int getBestStringMatchIndex(const std::string& tag,
 
 std::string getMatchingTag(const std::string& tag,
                            const std::vector<std::string>& list,
-                           const unsigned char& params = CMP_STR_DEFAULT);
+                           const unsigned char& params = CMP_STR_DEFAULT,
+                           const float& threshold = 0.6f);
 unsigned int getMatchingIndex(const std::string& focus,
                               const std::vector<std::string>& list,
                               const unsigned char& params = CMP_STR_DEFAULT,

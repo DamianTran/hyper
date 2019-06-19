@@ -405,20 +405,6 @@ _2Dstream::_2Dstream():
     imported(false),
     search_index(nullptr) { }
 
-_2Dstream::_2Dstream(const bool& verbose,
-                     const string& delim):
-    stream(nullptr),
-    streamSize(0),
-    numRows(0),
-    numColumns(0),
-    readBuffer(new char[STREAM_SCAN_BUFFER_SIZE]),
-    delim(delim),
-    cached_alignment(ORIENTATION_UNKNOWN),
-    verbose(verbose),
-    active(false),
-    imported(false),
-    search_index(nullptr) { }
-
 _2Dstream::_2Dstream(const string& filename,
                      const bool& verbose,
                      const string& delim):
@@ -432,13 +418,14 @@ _2Dstream::_2Dstream(const string& filename,
     verbose(verbose),
     active(false),
     imported(false),
+    bOpen(false),
     search_index(nullptr)
 {
     openStream(filename, true, delim);
 }
 
 _2Dstream::_2Dstream(const _2Dstream& other):
-    stream(fopen(other.streamFile.c_str(), "rb")),
+    stream(nullptr),
     streamFile(other.streamFile),
     streamSize(other.streamSize),
     numRows(other.numRows),
@@ -452,6 +439,7 @@ _2Dstream::_2Dstream(const _2Dstream& other):
     importData(other.importData),
     verbose(other.verbose),
     active(other.active),
+    bOpen(other.bOpen),
     imported(other.imported)
 {
 
@@ -462,6 +450,15 @@ _2Dstream::_2Dstream(const _2Dstream& other):
     else
     {
         search_index = nullptr;
+    }
+
+    if(other.isOpen())
+    {
+        stream = fopen(other.streamFile.c_str(), "rb");
+    }
+    else
+    {
+        stream = nullptr;
     }
 
 }
@@ -502,6 +499,7 @@ _2Dstream& _2Dstream::operator=(const _2Dstream& other)
     importData = other.importData;
     verbose = other.verbose;
     active = other.active;
+    bOpen = other.isOpen();
     imported = other.imported;
     delim = other.delim;
 
@@ -586,6 +584,7 @@ void _2Dstream::reset()
     cached_alignment = ORIENTATION_UNKNOWN;
     importData.clear();
     imported = false;
+    bOpen = false;
 
     delete(search_index);
     search_index = nullptr;
@@ -690,6 +689,8 @@ bool _2Dstream::openStream(const string& filename, const bool& update,
     if(update) this->update();
 
     if(verbose) cout << "\r>> Finished\t\t\t\n";
+
+    bOpen = true;
 
     return true;
 }

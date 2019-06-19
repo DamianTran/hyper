@@ -911,6 +911,7 @@ bool cmpString(const char* focus, const char* other,
             {
 
                 *output = (float)sw_output / (maxSIZE * SW_MATCH_SCORE);
+
                 return *output >= threshold;
 
             }
@@ -1421,18 +1422,19 @@ unsigned int getBestStringMatchIndex(const string& tag,
 }
 
 string getMatchingTag(const string& tag,
-                           const vector<string>& list,
-                           const BYTE& params)
+                      const vector<string>& list,
+                      const BYTE& params,
+                      const float& threshold)
 {
     vector<string> matches;
     for(auto& item : list)
     {
         if(tag == item) return tag;
-        else if(cmpString(tag, item, params)) matches.push_back(item);
+        else if(cmpString(tag, item, params, threshold)) matches.push_back(item);
     }
     if(matches.size() > 1)
     {
-        return getBestStringMatch(tag, matches);
+        return getBestStringMatch(tag, matches, threshold);
     }
     else if(matches.size() == 1) return matches.front();
     else return string();
