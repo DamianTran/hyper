@@ -29,6 +29,24 @@
 namespace hyperC
 {
 
+template<typename numeric_t>
+size_t volume(const std::vector<numeric_t>& dimensions)
+{
+    if(dimensions.empty())
+    {
+        return 0;
+    }
+
+    size_t output = 1;
+
+    for(auto& d : dimensions)
+    {
+        output *= d;
+    }
+
+    return output;
+}
+
 /** @brief Obtain a list of coordinates in n-dimensional space
   * corresponding to the 0-point origins of evenly-spaced volumes.
   *
@@ -50,7 +68,7 @@ void get_uniform_volumes(const std::vector<numeric_t>& n_position,
                          const std::vector<numeric_t>& n_volume,
                          const size_t& num_volumes,
                          std::vector<std::vector<numeric_t>>* vertices,
-                         std::vector<numeric_t>* volume = nullptr)
+                         std::vector<numeric_t>* unit_volume = nullptr)
 {
 
     if(n_position.empty() ||
@@ -62,6 +80,10 @@ void get_uniform_volumes(const std::vector<numeric_t>& n_position,
     {
         throw std::invalid_argument("hyperC::get_uniform_volumes: position and volume dimensions do not match");
     }
+    else if(volume(n_volume) <= 0.0)
+    {
+        throw std::invalid_argument("hyperC::get_uniform_volumes: invalid volume dimensions");
+    }
 
     if(num_volumes < 1)
     {
@@ -70,9 +92,9 @@ void get_uniform_volumes(const std::vector<numeric_t>& n_position,
     else if(num_volumes == 1)
     {
         vertices->emplace_back(n_position);
-        if(volume)
+        if(unit_volume)
         {
-            *volume = n_volume;
+            *unit_volume = n_volume;
         }
         return;
     }
@@ -102,39 +124,42 @@ void get_uniform_volumes(const std::vector<numeric_t>& n_position,
     // Determine the maximum volume per neuron
     numeric_t volume_unit = t_volume/num_volumes;
 
-    // Determine n-dimensional integer lengths with volume minimally filling volume
+    // Determine n-dimensional integer lengths with minimally-filling volume
 
     numeric_t cs = 0.0;
     std::vector<numeric_t> unit_square(n_volume.size(), 1.0);
 
+    // Increment the unit volume until maximum is reached
     while(cs < volume_unit)
     {
 
         for(size_t d = 0; (d < unit_square.size()) && (cs < volume_unit); ++d)
         {
+
             cs = 1;
 
-            if(unit_square[d] + 1 < n_volume[d])
+            ++unit_square[d];
+            for(auto& length : unit_square)
             {
-
-                ++unit_square[d];
-                for(auto& length : unit_square)
-                {
-                    cs *= length;
-                }
-
-                if(cs > volume_unit)
-                {
-                    if(!unit_square[d])
-                    {
-                        break;
-                    }
-                    --unit_square[d];
-                }
+                cs *= length;
             }
+
+            if(cs > volume_unit)
+            {
+                if(unit_square[d] <= 1)
+                {
+                    goto max_found;
+                }
+                --unit_square[d];
+
+                goto max_found;
+            }
+
         }
 
     }
+
+    max_found:;
 
     // Create a coordinate map containing allowed indices for each dimension
 
@@ -191,9 +216,9 @@ void get_uniform_volumes(const std::vector<numeric_t>& n_position,
         (*vertices)[i] = coord_transpose[i];
     }
 
-    if(volume)
+    if(unit_volume)
     {
-        *volume = unit_square;
+        *unit_volume = unit_square;
     }
 
 }

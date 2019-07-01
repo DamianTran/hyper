@@ -1181,7 +1181,7 @@ template<typename T> std::ostream& operator<<(std::ostream& output, const Vector
     return output;
 }
 
-template<typename T> T rand(T i, T f)
+template<typename T> T rand(const T& i, const T& f)
 {
 //    srand(time(NULL));
     return (double(std::rand()) / (RAND_MAX) * (f - i) + i);
@@ -1661,20 +1661,6 @@ template<typename T1, typename T2> bool operator!=(std::vector<T1>& V1, std::vec
 {
     return !(V1 == V2);
 }
-
-template<typename T1, typename T2> unsigned int numEqual(const std::vector<T1>& V1, const std::vector<T2>& V2)
-{
-    unsigned int output = 0;
-    for(auto& val : V1)
-    {
-        if(anyEqual(val, V2))
-        {
-            ++output;
-        }
-    }
-    return output;
-}
-
 template<typename T1, typename T2> unsigned int match(const T1& item, const std::vector<T2>& V)
 {
     unsigned int index = 0;
@@ -2032,17 +2018,27 @@ template<typename T1, typename T2> std::vector<unsigned int> select_subset_idx(c
     return output;
 }
 
-// Random vector
-
-template<typename T> void vrand(std::vector<T>& output, T ri, T rf, const unsigned int& length, const bool& repeat)  // No copy
+/** @brief Store a random vector in output containing numerics from ri - rf.
+  *
+  * @param output   Vector to store output in.
+  * @param ri       Lower bound of random values.
+  * @param rf       Upper bound of random values.
+  * @param length   Length of the vector.
+  * @param repeat   Allow repeated values.
+*/
+template<typename T> void vrand(std::vector<T>& output,
+                                const T& ri,
+                                const T& rf,
+                                const unsigned int& length,
+                                const bool& repeat)  // No copy
 {
-    output.clear();
     output.resize(length);
+
     if(repeat)
     {
         for(size_t i = 0; i < length; ++i)
         {
-            output.push_back(rand<T>(ri, rf));
+            output[i] = rand<T>(ri, rf);
         }
         return;
     }
@@ -2052,22 +2048,32 @@ template<typename T> void vrand(std::vector<T>& output, T ri, T rf, const unsign
 
     while((i < length) && !possibilities.empty())
     {
-        randIndex = rand(size_t(0), possibilities.size() - 1);
+        randIndex = rand(size_t(0), possibilities.size());
+
+        if(randIndex >= possibilities.size())
+        {
+            randIndex = possibilities.size() - 1;
+        }
+
         output[i] = possibilities[randIndex];
         possibilities.erase(possibilities.begin() + randIndex);
         ++i;
     }
 }
 
-template<typename T> std::vector<T> vrand(T ri, T rf, const unsigned int& length, const bool& repeat)
+template<typename T> std::vector<T> vrand(const T& ri,
+                                          const T& rf,
+                                          const unsigned int& length,
+                                          const bool& repeat)
 {
     std::vector<T> output;
-    output.reserve(length);
+    output.resize(length);
+
     if(repeat)
     {
         for(size_t i = 0; i < length; ++i)
         {
-            output.push_back(rand<T>(ri, rf));
+            output[i] = rand<T>(ri, rf);
         }
         return output;
     }
@@ -2079,13 +2085,15 @@ template<typename T> std::vector<T> vrand(T ri, T rf, const unsigned int& length
         {
             randValue = rand<T>(ri, rf);
         }
-        output.push_back(randValue);
+        output[i] = randValue;
     }
 
     return output;
 }
 
-template<typename T> std::vector<T> pickRand(std::vector<T>& output, const std::vector<T>& V, const unsigned int length)
+template<typename T> std::vector<T> pickRand(std::vector<T>& output,
+                                             const std::vector<T>& V,
+                                             const unsigned int& length)
 {
     size_t L = V.size();
     std::vector<size_t> randIndex = vrand(size_t(0), L-1, length, false);
@@ -2138,7 +2146,9 @@ template<typename T> void randomize(std::vector<T>& V)
     V = output;
 }
 
-template<typename T> std::vector<T> pickRange(std::vector<T>& V, const unsigned int first, const unsigned int last)
+template<typename T> std::vector<T> pickRange(std::vector<T>& V,
+                                              const unsigned int& first,
+                                              const unsigned int& last)
 {
     std::vector<T> output;
     if(first < last)
@@ -2163,63 +2173,39 @@ template<typename T> std::vector<T> pickRange(std::vector<T>& V, const unsigned 
     return output;
 }
 
-template<typename T, typename N> unsigned int numEqual(T item, std::vector<N> &V)
+template<typename T, typename N> unsigned int numEqual(const T& item,
+                                                       const std::vector<N>& V)
 {
-    size_t L = V.size();
-    unsigned int count(0);
-    for(size_t i = 0; i < L; ++i)
+    unsigned int count = 0;
+
+    for(auto& element : V)
     {
-        if(V[i] == item) ++count;
+        if(element == item)
+        {
+            ++count;
+        }
     }
+
     return count;
 }
 
-template<typename T1, typename T2> unsigned int numEqual(std::vector<T1>& V1, std::vector<T2>& V2)
+template<typename T1, typename T2> unsigned int numEqual(const std::vector<T1>& V1,
+                                                         const std::vector<T2>& V2)
 {
-    size_t L1 = V1.size(), L2 = V2.size();
     unsigned int count(0);
-    for(size_t i = 0; i < L1; ++i)
+
+    for(auto& i1 : V1)
     {
-        for(size_t j = 0; j < L2; ++j)
+        for(auto& i2 : V2)
         {
-            if(V1[i] == V2[j]) ++count;
+            if(i1 == i2)
+            {
+                ++count;
+            }
         }
     }
+
     return count;
-}
-
-template<typename T> void erase_all(std::vector<T>& V)
-{
-    V.erase(V.begin(), V.end());
-}
-
-template<typename T> std::string vstring(std::vector<T> &V)
-{
-    std::string output = "[";
-    for(size_t i = 0; i < V.size(); ++i)
-    {
-        output += std::to_string(V[i]);
-        if((V.size() > 1) && (i < V.size() - 1))
-        {
-            output += ',';
-        }
-    }
-    output += ']';
-    return output;
-}
-
-template<typename T> std::ostream& vstream(std::ostream& output, std::vector<T> &V)
-{
-    for(size_t i = 0; i < V.size(); ++i)
-    {
-        output << V[i];
-        if((V.size() > 1) && (i < V.size() - 1))
-        {
-            output << ',';
-        }
-    }
-    output << ']';
-    return output;
 }
 
 template<typename T> unsigned int maxSizeIndex(const std::vector<std::vector<T>>& matrix)
@@ -2237,7 +2223,7 @@ template<typename T> unsigned int maxSizeIndex(const std::vector<std::vector<T>>
     return maxInd;
 }
 
-template<typename T> T average(const std::vector<T> &V)
+template<typename T> T average(const std::vector<T>& V)
 {
     size_t L = V.size();
     if(L < 1) return T();
@@ -2761,12 +2747,17 @@ template<typename T> T maxDist(const std::vector<T>& V)
     return maxD;
 }
 
-template<typename T> T rankedMax(const unsigned int rank, const std::vector<T>& V)
+template<typename T> T rankedMax(const unsigned int& rank, const std::vector<T>& V)
 {
-    T highVal, minVal = min(V);
+    T highVal;
+    T minVal = min(V);
+
     unsigned int highIdx;
+
     std::vector<unsigned int> highIndices;
+
     size_t L = V.size();
+
     for(size_t i = 0; i <= rank; ++i)
     {
         highVal = minVal;
