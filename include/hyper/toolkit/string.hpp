@@ -286,6 +286,10 @@ std::string bytes(const T& val)
 /////////////////////////////////////////////////////////////////////////////
 
 bool isNumeric(const std::string& s);
+bool isEquation(const std::string& s);
+bool isDigitalTime(const std::string& s);
+bool isGenetic(const std::string& s);
+
 std::string sigFigs(const std::string& numeric);
 std::string sigFigs(const float& value);
 int hexToInt(const char* c);
@@ -670,6 +674,19 @@ template<typename T> T* matching_item(const std::string& query,
     }
 
     return nullptr;
+}
+
+/////////////////////////////////////////////////////////////////////////////
+
+/* Interpretation */
+
+/////////////////////////////////////////////////////////////////////////////
+
+namespace English
+{
+
+bool isPlural(const std::string& str);
+
 }
 
 }

@@ -299,7 +299,8 @@ template<typename key_t, typename value_t> void writeMap(const std::map<key_t, v
     }
 }
 
-template<typename key_t, typename value_t> void readMap(std::map<key_t, value_t>& M, FILE* inFILE)
+template<typename key_t, typename value_t>
+void readMap(std::map<key_t, value_t>& M, FILE* inFILE)
 {
 
     uint64_t L;
@@ -1398,21 +1399,25 @@ template<typename T> T min(const std::vector<T> &V)
     return minV;
 }
 
-template<typename T> unsigned int minIndex(const std::vector<T> &V)
+/** @brief Get the index of the minimum value in vector [V]. */
+template<typename T>
+unsigned int minIndex(const std::vector<T>& V)
 {
+
     T minV(V[0]);
     size_t L = V.size();
     unsigned int minI = UINT_MAX;
+
     for(size_t i = 0; i < L; ++i)
     {
         if(isnan(V[i])) continue;
+
         if(isnan(minV))
         {
             minV = V[i];
             minI = i;
-            continue;
         }
-        if(V[i] < minV)
+        else if(V[i] < minV)
         {
             minV = V[i];
             minI = i;
@@ -1421,15 +1426,25 @@ template<typename T> unsigned int minIndex(const std::vector<T> &V)
         {
             minI = i;
         }
+
     }
+
     return minI;
 }
 
-template<typename T> T max(const std::vector<T> &V)
+/** @brief Obtain the maximum value of vector [V]. */
+template<typename T>
+T max(const std::vector<T>& V)
 {
+
+    if(V.empty())
+    {
+        return T(0);
+    }
+
     size_t L = V.size();
-    if(L < 1) return T(0);
     T maxV(V[0]);
+
     for(size_t i = 1; i < L; ++i)
     {
         if(isnan(V[i]) || (V[i] == UINT_MAX)) continue;
@@ -1440,11 +1455,19 @@ template<typename T> T max(const std::vector<T> &V)
         }
         if(V[i] > maxV) maxV = V[i];
     }
+
     return maxV;
 }
 
+/** @brief Obtain the maximum value of matrix [M]. */
 template<typename T> T max(const std::vector<std::vector<T>>& M)
 {
+
+    if(M.empty())
+    {
+        return T(0);
+    }
+
     T maxV = M.front().front();
     for(auto& V : M)
     {
@@ -2091,9 +2114,10 @@ template<typename T> std::vector<T> vrand(const T& ri,
     return output;
 }
 
-template<typename T> std::vector<T> pickRand(std::vector<T>& output,
-                                             const std::vector<T>& V,
-                                             const unsigned int& length)
+template<typename T>
+std::vector<T> pickRand(std::vector<T>& output,
+                        const std::vector<T>& V,
+                        const unsigned int& length)
 {
     size_t L = V.size();
     std::vector<size_t> randIndex = vrand(size_t(0), L-1, length, false);
@@ -2223,7 +2247,9 @@ template<typename T> unsigned int maxSizeIndex(const std::vector<std::vector<T>>
     return maxInd;
 }
 
-template<typename T> T average(const std::vector<T>& V)
+/** @brief Calculates the mean value in vector [V]. */
+template<typename T>
+T average(const std::vector<T>& V)
 {
     size_t L = V.size();
     if(L < 1) return T();
@@ -2240,7 +2266,9 @@ template<typename T> T average(const std::vector<T>& V)
     return output/N;
 }
 
-template<typename T> T average(const std::vector<std::vector<T>>& V)
+/** @brief Calculates the mean value in matrix [V]. */
+template<typename T>
+T average(const std::vector<std::vector<T>>& V)
 {
     size_t tSIZE = 0;
     if(V.size() < 1) return T();
@@ -2259,7 +2287,11 @@ template<typename T> T average(const std::vector<std::vector<T>>& V)
     return output/tSIZE;
 }
 
-template<typename T> void order(std::vector<T> &V, bool ascending = true)
+/** @brief Order the members of vector [V] in ascending or descending order.
+  *
+  * For efficiency, performs the ordering on the original vector. */
+template<typename T>
+void order(std::vector<T> &V, bool ascending = true)
 {
     size_t L = V.size();
     if(L < 2) return;
@@ -2341,7 +2373,9 @@ template<typename T> void sendBackward(const T& item, std::vector<T>& V)
     V[matchIndex] = tmp;
 }
 
-template<typename T> T median(std::vector<T> V)
+/** @brief Calculate the median value of vector [V]. */
+template<typename T>
+T median(std::vector<T> V)
 {
     size_t L = V.size();
     if(L < 1) return NAN;
@@ -2363,7 +2397,9 @@ template<typename T> T median(std::vector<T> V)
     return V[L/2];
 }
 
-template<typename T> T median(const std::vector<std::vector<T>>& M)
+/** @brief Calculate the median of matrix [M]. */
+template<typename T>
+T median(const std::vector<std::vector<T>>& M)
 {
     std::vector<T> V;
     for(auto& row : M)
@@ -2373,7 +2409,9 @@ template<typename T> T median(const std::vector<std::vector<T>>& M)
     return median(V);
 }
 
-template<typename T> T Q1(std::vector<T> V)
+/** @brief Calculate the 1st quartile value of vector [V]. */
+template<typename T>
+T Q1(std::vector<T> V)
 {
     order(V);
     size_t L = V.size();
@@ -2384,6 +2422,7 @@ template<typename T> T Q1(std::vector<T> V)
     return median(V);
 }
 
+/** @brief Calculate the 3rd quartile value of vector [V]. */
 template<typename T> T Q3(std::vector<T> V)
 {
     order(V);
@@ -2539,17 +2578,38 @@ template<typename T> DataSummary<T> summary(std::vector<T> data)
 
 }
 
-template<typename T> T percentileValue(float percentile, std::vector<T> V, bool ascending = true)
+/** @brief Obtain the value occuring at percentile [percentile] in vector [V].
+  *
+  * Calculates the index occuring at [percentile] in either ascending or descending
+  * order dictated by the [ascending] parameter, and rounds down before returning.
+  *
+  * @param percentile   The percentile (0.0f - 1.0f) cutoff.
+  * @param V    The vector to calculate the percentile index for.
+  * @param ascending    TRUE to calculate the highest percentile, FALSE to calculate
+  * the lowest percentile.
+  */
+template<typename T>
+T& percentileValue(const float& percentile,
+                   const std::vector<T>& V,
+                   const bool& ascending = true)
 {
-    if(V.size() < 1) return T();
+    if(V.empty())
+    {
+        return T();
+    }
+
     order(V, ascending);
+
     unsigned int position = (V.size() - 1)*percentile;
+
     return V[position];
+
 }
 
-template<typename T> T sum(const std::vector<T> &V)
+/** @brief Obtain the sum of vector [V]. */
+template<typename T> T sum(const std::vector<T>& V)
 {
-    if(V.size() < 1) return NAN;
+    if(V.empty()) return NAN;
     T output(NAN);
     for(auto& num : V)
     {
@@ -2560,7 +2620,9 @@ template<typename T> T sum(const std::vector<T> &V)
     return output;
 }
 
-template<typename T> T sum(const vMatrix<T>& M)
+/** @brief Obtain the sum of matrix [M]. */
+template<typename T>
+T sum(const vMatrix<T>& M)
 {
     if(M.empty()) return NAN;
     T output(NAN);
@@ -2576,23 +2638,39 @@ template<typename T> T sum(const vMatrix<T>& M)
     return output;
 }
 
-template<typename T> T cumprod(const std::vector<T> &V)
+/** @brief Obtain the cumulative product of vector [V]. */
+template<typename T>
+T cumprod(const std::vector<T> &V)
 {
-    if(V.size() < 1) return T();
+    if(V.empty()) return T(0);
+
     T output(V.front());
     size_t L = V.size();
     for(size_t i = 1; i < L; ++i)
     {
         output *= V[i];
     }
+
     return output;
 }
 
-template<typename T> unsigned int maxIndex(const std::vector<T> &V)
+/** @brief Obtain the index of the maximum value in vector [V].
+  *
+  * Obtains the maximum index, or returns UINT_MAX upon failure.
+  */
+template<typename T>
+unsigned int maxIndex(const std::vector<T>& V)
 {
+
+    if(V.empty())
+    {
+        return UINT_MAX;
+    }
+
     T maxV(V[0]);
     size_t L = V.size();
     unsigned int maxI = UINT_MAX;
+
     for(size_t i = 0; i < L; ++i)
     {
         if(isnan(V[i]) || isinf(V[i])) continue;
@@ -2612,10 +2690,13 @@ template<typename T> unsigned int maxIndex(const std::vector<T> &V)
             maxI = i;
         }
     }
+
     return maxI;
 }
 
-template<typename T> T mode(const std::vector<T>& V)
+/** @brief Obtain the most frequent value (mode) in vector [V]. */
+template<typename T>
+T mode(const std::vector<T>& V)
 {
 
     if(V.empty()) return T();
@@ -2663,7 +2744,9 @@ template<typename T> T mode(const std::vector<T>& V)
     return T();
 }
 
-template<typename T> T minDist(const std::vector<T>& V)
+/** @brief Obtain the minimum value between elements of vector [V]. */
+template<typename T>
+T minDist(const std::vector<T>& V)
 {
     size_t L = V.size();
     if(L < 2) return T(0);
@@ -2732,7 +2815,9 @@ size_t minDistIndex(const T1& value, const std::vector<T2>& V)
     return minIndex;
 }
 
-template<typename T> T maxDist(const std::vector<T>& V)
+/** @brief Obtain the largest distance between elements in vector [V]. */
+template<typename T>
+T maxDist(const std::vector<T>& V)
 {
     size_t L = V.size();
     if(L < 2) return T(0);
@@ -2747,7 +2832,13 @@ template<typename T> T maxDist(const std::vector<T>& V)
     return maxD;
 }
 
-template<typename T> T rankedMax(const unsigned int& rank, const std::vector<T>& V)
+/** @brief Obtain the value in vector [V] ranked [rank] from the highest value.
+  *
+  * @param rank The rank of the value to be obtained.
+  * @param V    The vector containing values to be ranked.
+  */
+template<typename T>
+T rankedMax(const unsigned int& rank, const std::vector<T>& V)
 {
     T highVal;
     T minVal = min(V);
@@ -2775,7 +2866,13 @@ template<typename T> T rankedMax(const unsigned int& rank, const std::vector<T>&
     return V[highIndices.back()];
 }
 
-template<typename T> unsigned int rankedMaxIndex(const unsigned int rank, const std::vector<T>& V)
+/** @brief Obtain the index of the value in vector [V] ranked [rank] from the highest.
+  *
+  * @param rank The rank of the index to be obtained.
+  * @param V    The vector containing values to be ranked.
+  */
+template<typename T>
+unsigned int rankedMaxIndex(const unsigned int rank, const std::vector<T>& V)
 {
     T highVal, minVal = min(V);
     unsigned int highIdx;
@@ -2798,7 +2895,13 @@ template<typename T> unsigned int rankedMaxIndex(const unsigned int rank, const 
     return highIndices.back();
 }
 
-template<typename T> T rankedMin(const unsigned int rank, const std::vector<T>& V)
+/** @brief Obtain the value in vector [V] ranked [rank] from the lowest value.
+  *
+  * @param rank The rank of the value to be obtained.
+  * @param V    The vector containing values to be ranked.
+  */
+template<typename T>
+T rankedMin(const unsigned int rank, const std::vector<T>& V)
 {
     T lowVal, maxVal = max(V);
     unsigned int lowIdx;
@@ -2821,7 +2924,13 @@ template<typename T> T rankedMin(const unsigned int rank, const std::vector<T>& 
     return V[lowIndices.back()];
 }
 
-template<typename T> unsigned int rankedMinIndex(const unsigned int rank, const std::vector<T>& V)
+/** @brief Obtain the index of the value in vector [V] ranked [rank] from the lowest.
+  *
+  * @param rank The rank of the index to be obtained.
+  * @param V    The vector containing values to be ranked.
+  */
+template<typename T>
+unsigned int rankedMinIndex(const unsigned int rank, const std::vector<T>& V)
 {
     T lowVal, maxVal = max(V);
     unsigned int lowIdx;
@@ -2844,8 +2953,16 @@ template<typename T> unsigned int rankedMinIndex(const unsigned int rank, const 
     return lowIndices.back();
 }
 
-template<typename T> T min(const std::vector<std::vector<T>>& M)
+/** @brief Obtain the minimum value in matrix [M]. */
+template<typename T>
+T min(const std::vector<std::vector<T>>& M)
 {
+
+    if(M.empty())
+    {
+        throw std::invalid_argument("Min: attempted minimum value fetch for empty metrix");
+    }
+
     T minV = M.front().front();
     for(auto& V : M)
     {
@@ -2865,19 +2982,19 @@ template<typename T> T min(const std::vector<std::vector<T>>& M)
     return minV;
 }
 
-template<typename T> T range(const std::vector<T>& V)
+/** @brief Obtain the range of vector [V] (max - min). */
+template<typename T>
+T range(const std::vector<T>& V)
 {
-    typename std::vector<T>::const_iterator itEND = V.end();
-    float vMax = V.front(), vMin = V.front();
-    for(typename std::vector<T>::const_iterator it = V.begin(); it != itEND; ++it)
-    {
-        if(*it > vMax) vMax = *it;
-        else if(*it < vMin) vMin = *it;
-    }
-    return absolute(vMax - vMin);
+    return max(V) - min(V);
 }
 
-template<typename T> T stdev(const std::vector<T>& V)
+/** @brief Get the standard deviation of vector [V].
+  *
+  * Obtained via square root of MSE from the vector mean.
+  */
+template<typename T>
+T stdev(const std::vector<T>& V)
 {
     T vMean = average(V);
     T output(0);
@@ -2891,7 +3008,12 @@ template<typename T> T stdev(const std::vector<T>& V)
     return sqrt(output/N);
 }
 
-template<typename T> T stdev(const std::vector<std::vector<T>>& V)
+/** @brief Obtain the standard deviation for elements in matrix [M].
+  *
+  * Obtained via square root of MSE from the matrix mean.
+  */
+template<typename T>
+T stdev(const std::vector<std::vector<T>>& V)
 {
     T vMean = average(V);
     T output(0);
@@ -2910,36 +3032,51 @@ template<typename T> T stdev(const std::vector<std::vector<T>>& V)
     return sqrt(output/tSIZE);
 }
 
-template<typename T> std::vector<unsigned int> orderedIndex(std::vector<T> V, bool ascending = true)
+/** @brief Obtain a vector analogous to vector[V] containing the order rank of each element.
+  *
+  * @param V    The vector of values to obtain order ranks for.
+  * @param ascending    TRUE to order from least to greatest, FALSE for the converse.
+  */
+template<typename T>
+std::vector<unsigned int> orderedIndex(std::vector<T> V, bool ascending = true)
 {
-    size_t L = V.size(), MI = UINT_MAX;
+    size_t L = V.size();
+    size_t MI = UINT_MAX;
+
     std::vector<unsigned int> output;
+    output.reserve(L);
 
     if(ascending)
     {
+
         for(size_t i = 0; i < L; ++i)
         {
             MI = minIndex(V);
             if((MI == UINT_MAX) || isnan(V[MI])) continue;
-            output.push_back(MI);
-            V[MI] = NAN;
+            output.emplace_back(MI);
+            V[MI] = std::numeric_limits<T>::max();
         }
+
     }
     else
     {
+
         for(size_t i = 0; i < L; ++i)
         {
             MI = maxIndex(V);
             if((MI == UINT_MAX) || isnan(V[MI])) continue;
-            output.push_back(MI);
-            V[MI] = NAN;
+            output.emplace_back(MI);
+            V[MI] = std::numeric_limits<T>::min();
         }
+
     }
 
     return output;
 }
 
-template<typename T> std::vector<T> unique(std::vector<T> V)
+/** @brief Obtain a vector containing only the unique values in vector [V]. */
+template<typename T>
+std::vector<T> unique(std::vector<T> V)
 {
     size_t L = V.size();
     for(size_t i = 0; i < L; ++i)
@@ -2962,7 +3099,9 @@ template<typename T> std::vector<T> unique(std::vector<T> V)
     return V;
 }
 
-template<typename T> unsigned int numUnique(const std::vector<T>& V)
+/** @brief Get a count of the number of unique values in vector [V]. */
+template<typename T>
+unsigned int numUnique(const std::vector<T>& V)
 {
     if(V.empty()) return 0;
     else if(V.size() == 1) return 1;

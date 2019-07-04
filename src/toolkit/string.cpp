@@ -524,6 +524,74 @@ bool isNumeric(const string& s)
     return numericCheck;
 }
 
+bool isEquation(const string& s)
+{
+
+    bool numericCheck = false;
+    unsigned int startIndex = 0;
+    while((startIndex < s.size()) &&
+            ((s[startIndex] == ' ') ||
+             (s[startIndex] == '-') || (s[startIndex] == '+')))
+    {
+        ++startIndex;
+    }
+
+    for(size_t i = startIndex; i < s.size(); ++i)
+    {
+        if(!isNumber(s[i]) && !isCharType(s[i], ".!+-*/^()[]{}= ")) return false;
+        if(((s[i] == 'E') || (s[i] == 'e')) && !isLetter(s[i + 1])) return false;
+
+        numericCheck = true;
+    }
+
+    return numericCheck;
+
+}
+
+bool isDigitalTime(const string& s)
+{
+
+    bool numeric = false;
+    for(auto& c : s)
+    {
+        if(isNumeric(c))
+        {
+            numeric = true;
+            break;
+        }
+    }
+
+    if(numeric)
+    {
+        return ((s.find(':') < s.size()) ||
+                cmpStringToList(s, {"am", "pm" }, CMP_STR_CASE_INSENSITIVE |
+                                                  CMP_STR_SIZE_INSENSITIVE));
+    }
+
+    return false;
+
+}
+
+bool isGenetic(const string& s)
+{
+
+    if(s.size() < 3)
+    {
+        return false;
+    }
+
+    for(auto& c : s)
+    {
+        if(!isCharType(c, "atcguATCGU-35'"))
+        {
+            return false;
+        }
+    }
+
+    return true;
+
+}
+
 string sigFigs(const string& numeric)
 {
     if((numeric.find('.') >= numeric.size()) ||
@@ -1529,6 +1597,22 @@ unsigned int ncol(const string& str, const string& delim)
 unsigned int nrow(const string& str)
 {
     return nline(str);
+}
+
+namespace English
+{
+
+bool isPlural(const string& str)
+{
+
+    return((str.find("s") == (str.size() - 1)) ||
+           (str.find("ae") == (str.size() - 2)) ||
+           (str.find("i") == (str.size() - 1)) ||
+           (str.find("y") == (str.size() - 1)) ||
+           (str.find("ese") == (str.size() - 3)));
+
+}
+
 }
 
 }
