@@ -289,6 +289,10 @@ bool isNumeric(const std::string& s);
 bool isEquation(const std::string& s);
 bool isDigitalTime(const std::string& s);
 bool isGenetic(const std::string& s);
+bool isUpperCase(const std::string& s);
+bool isLowerCase(const std::string& s);
+
+float pctUpperCase(const std::string& s);
 
 std::string sigFigs(const std::string& numeric);
 std::string sigFigs(const float& value);

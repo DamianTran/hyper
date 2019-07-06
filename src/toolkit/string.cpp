@@ -592,6 +592,51 @@ bool isGenetic(const string& s)
 
 }
 
+bool isUpperCase(const string& s)
+{
+
+    for(auto& c : s)
+    {
+        if(isLowerCase(c))
+        {
+            return false;
+        }
+    }
+
+    return true;
+
+}
+
+bool isLowerCase(const string& s)
+{
+    for(auto& c : s)
+    {
+        if(isUpperCase(c))
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+float pctUpperCase(const string& s)
+{
+
+    float output = 0.0;
+
+    for(auto& c : s)
+    {
+        if(isUpperCase(c))
+        {
+            ++output;
+        }
+    }
+
+    return output / s.size();
+
+}
+
 string sigFigs(const string& numeric)
 {
     if((numeric.find('.') >= numeric.size()) ||
@@ -1608,7 +1653,7 @@ bool isPlural(const string& str)
     return((str.find("s") == (str.size() - 1)) ||
            (str.find("ae") == (str.size() - 2)) ||
            (str.find("i") == (str.size() - 1)) ||
-           (str.find("y") == (str.size() - 1)) ||
+           (str.find("ny") == (str.size() - 2)) ||
            (str.find("ese") == (str.size() - 3)));
 
 }
