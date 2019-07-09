@@ -2305,9 +2305,9 @@ void order(std::vector<T> &V, bool ascending = true)
             {
                 if(V[j] < V[i])
                 {
-                    tmp = V[i];
-                    V[i] = V[j];
-                    V[j] = tmp;
+                    tmp = std::move(V[i]);
+                    V[i] = std::move(V[j]);
+                    V[j] = std::move(tmp);
                 }
             }
         }
@@ -2320,9 +2320,9 @@ void order(std::vector<T> &V, bool ascending = true)
             {
                 if(V[j] > V[i])
                 {
-                    tmp = V[i];
-                    V[i] = V[j];
-                    V[j] = tmp;
+                    tmp = std::move(V[i]);
+                    V[i] = std::move(V[j]);
+                    V[j] = std::move(tmp);
                 }
             }
         }

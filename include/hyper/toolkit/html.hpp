@@ -124,6 +124,7 @@ bool HTML_DOCUMENT_TYPE(const char* doc_ptr);
 bool HTML_BEGIN(const char* text_ptr);
 bool HTML_END(const char* text_ptr);
 bool HTML_COMMENT(const char* text_ptr);
+bool HTML_CONDITIONAL(const char* text_ptr);
 bool HTML_DECL(const char* text_ptr);
 bool HTML_NOCONTENT(const char* text_ptr);
 int HTML_FORWARD(const char* text_ptr);
@@ -221,6 +222,7 @@ protected:
     std::vector<HTML_tree> branches;
 
     size_t level;
+    size_t sub_level;
 
 };
 

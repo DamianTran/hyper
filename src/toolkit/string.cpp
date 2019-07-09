@@ -774,15 +774,17 @@ bool sw_align(const char* query, const char* background,
                      bool case_insensitive,
                      unsigned int* out_pos)
 {
-    unsigned int xL = strlen(query)+1, yL = strlen(background)+1;
-    vMatrix<int> scores(yL, vector<int>(xL, 0)),
-            dir(yL, vector<int>(xL, 3));
+    unsigned int xL = strlen(query)+1;
+    unsigned int yL = strlen(background)+1;
+
+    vMatrix<int> scores(yL, vector<int>(xL, 0));
+    vMatrix<int> dir(yL, vector<int>(xL, 3));
 
     vector<int> assessment(4, 0);
 
-    for(size_t y = 1; y < yL; ++y)
+    for(size_t y = 1, x; y < yL; ++y)
     {
-        for(size_t x = 1; x < xL; ++x)
+        for(x = 1; x < xL; ++x)
         {
             if((query[x-1] == background[y-1]) || // Case-insensitive alignment
                     (case_insensitive &&
@@ -813,68 +815,24 @@ bool sw_align(const char* query, const char* background,
         }
     }
 
-    int maxScore = max(scores), thresScore = maxScore * threshold;
+    int maxScore = max(scores);
+    int thresScore = maxScore * threshold;
 
-    if(output != nullptr) *output = maxScore;
-    VectorPairU maxCoords;
-
-    for(size_t y = 1; y < yL; ++y)
+    if(output)
     {
-        for(size_t x = 1; x < xL; ++x)
-        {
-            if(scores[y][x] > thresScore) maxCoords.emplace_back(x, y);
-            if(out_pos &&
-               (scores[y][x] == maxScore)) *out_pos = x - 1;
-        }
+        *output = maxScore;
     }
 
-    vector<VectorPairU> coords;
-
-    int stepX = 0, stepY = 0, identical;
-    bool walk;
-
-    for(size_t i = 0; i < maxCoords.size(); ++i)
+    for(size_t y = 1, x; y < yL; ++y)
     {
-
-        coords.emplace_back();
-
-        stepX = maxCoords[i].x;
-        stepY = maxCoords[i].y;
-        identical = 0;
-
-        walk = true;
-        while(walk)
+        for(x = 1; x < xL; ++x)
         {
-            switch(dir[stepY][stepX])
+            if(out_pos &&
+               (scores[y][x] == maxScore))
             {
-            case SW_PTR_DIAG:
-            {
-                if(scores[stepY-1][stepX-1] < scores[stepY][stepX]) ++identical;
-                --stepX;
-                --stepY;
-                coords.back().insert(0, stepX, stepY);
-                break;
-            }
-            case SW_PTR_LEFT:
-            {
-                --stepX;
-                coords.back().insert(0, stepX, UINT_MAX);
-                break;
-            }
-            case SW_PTR_UP:
-            {
-                --stepY;
-                coords.back().insert(0, UINT_MAX, stepY);
-                break;
-            }
-            default:
-            {
-                walk = false;
-                break;
-            }
+                   *out_pos = x - 1;
             }
         }
-
     }
 
     return (float)maxScore > ((float)(strlen(background))+(float)(strlen(query)))/2*5*threshold;
@@ -1013,6 +971,25 @@ bool cmpString(const char* focus, const char* other,
 
     if(params & CMP_STR_SW)
     {
+
+        if((s1SIZE < s2SIZE) && ((float)s1SIZE/s2SIZE < threshold))
+        {
+            if(output)
+            {
+                *output = 0.0f;
+            }
+
+            return false;
+        }
+        else if((s2SIZE < s1SIZE) && ((float)s2SIZE/s1SIZE < threshold))
+        {
+            if(output)
+            {
+                *output = 0.0f;
+            }
+
+            return false;
+        }
 
         unsigned int sw_output;
 

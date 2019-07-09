@@ -49,7 +49,9 @@ bool Spider::go_to(const string& URL)
 
     if(bVerbose)
     {
+        spider_print_lock.lock();
         cout << "Going to: " << newURL << '\n';
+        spider_print_lock.unlock();
     }
 
     bSuccess = false;
@@ -71,7 +73,9 @@ bool Spider::go_to(const string& URL)
             history.insert(history.begin() + history_index, WebPage(history[i]));
             if(bVerbose)
             {
+                spider_print_lock.lock();
                 cout << "Revisited cached website: " << history[history_index].getURL() << '\n';
+                spider_print_lock.unlock();
             }
 
             ++i;
@@ -94,7 +98,9 @@ bool Spider::go_to(const string& URL)
             {
                 if(bVerbose)
                 {
+                    spider_print_lock.lock();
                     cout << "Redirected to: " << redirect_url << '\n';
+                    spider_print_lock.unlock();
                 }
                 newURL = redirect_url;
             }
@@ -114,7 +120,9 @@ bool Spider::go_to(const string& URL)
 
                 if(bVerbose)
                 {
+                    spider_print_lock.lock();
                     cout << "Page: " << page.getTitle() << '\n';
+                    spider_print_lock.unlock();
                 }
                 bSuccess = true;
             }
@@ -145,7 +153,9 @@ bool Spider::go_to(const string& URL)
 
                 if(bVerbose)
                 {
+                    spider_print_lock.lock();
                     cout << "Page: " << page.getTitle() << '\n';
+                    spider_print_lock.unlock();
                 }
                 bSuccess = true;
             }
@@ -327,7 +337,9 @@ bool Spider::find_pages(map<string, string>& output,
 
         if(bVerbose)
         {
+            spider_print_lock.lock();
             cout << "Initiating search branch with depth: " << search_depth << '\n';
+            spider_print_lock.unlock();
         }
 
         int index = 0;
@@ -336,7 +348,9 @@ bool Spider::find_pages(map<string, string>& output,
         for(auto& pair : links)
         {
 
+            spider_print_lock.lock();
             cout << "Searching link " << index + 1 << "/" << max_index << '\n';
+            spider_print_lock.unlock();
             ++index;
 
             string fileExt = fs::path(pair.first).extension().string();
@@ -347,7 +361,9 @@ bool Spider::find_pages(map<string, string>& output,
             {
                if(bVerbose)
                {
+                   spider_print_lock.lock();
                    cout << "Skipping outer domain link: " << pair.first << '\n';
+                   spider_print_lock.unlock();
                }
                continue;
             }
@@ -358,7 +374,9 @@ bool Spider::find_pages(map<string, string>& output,
                 {
                     if(bVerbose)
                     {
+                        spider_print_lock.lock();
                         cout << "Skipping excluded file type: " << pair.first << '\n';
+                        spider_print_lock.unlock();
                     }
 
                     continue;
@@ -372,7 +390,9 @@ bool Spider::find_pages(map<string, string>& output,
 
                     if(bVerbose)
                     {
+                        spider_print_lock.lock();
                         cout << "Found media file: " << pair.first << '\n';
+                        spider_print_lock.unlock();
                     }
 
                     continue;
@@ -389,7 +409,9 @@ bool Spider::find_pages(map<string, string>& output,
 
                     if(bVerbose)
                     {
+                        spider_print_lock.lock();
                         cout << "Navigated to: " << pair.first << '\n';
+                        spider_print_lock.unlock();
                     }
 
                     vector<string> textSections;
@@ -445,7 +467,9 @@ bool Spider::find_pages(map<string, string>& output,
 
                         if(bVerbose)
                         {
+                            spider_print_lock.lock();
                             cout << "Following link: " << pair.first << '\n';
+                            spider_print_lock.unlock();
                         }
                     }
                 }
@@ -453,7 +477,10 @@ bool Spider::find_pages(map<string, string>& output,
             }
             else if(bVerbose)
             {
+
+                spider_print_lock.lock();
                 cout << "Already visited link: " << pair.first << '\n';
+                spider_print_lock.unlock();
             }
         }
 

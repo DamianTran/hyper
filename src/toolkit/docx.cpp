@@ -45,15 +45,16 @@
 using namespace boost::filesystem;
 namespace pt = boost::property_tree;
 using namespace hyperC;
+using namespace std;
 
-bool getDocumentBody(std::string& output, const std::string& filename)
+bool getDocumentBody(string& output, const string& filename)
 {
 
     if(access(filename.c_str(), F_OK)) return false;
 
     size_t initSIZE = output.size();
 
-    std::string ext_type = path(filename).extension().string();
+    string ext_type = path(filename).extension().string();
     if(ext_type == ".docx")
     {
 
@@ -65,7 +66,7 @@ bool getDocumentBody(std::string& output, const std::string& filename)
         zip_t* doc_archive = zip_open(filename.c_str(), 0, &err);
         if(doc_archive == nullptr) return false;
 
-        std::stringstream ss;
+        stringstream ss;
         char buf[ZIP_READ_BUF_SIZE*2];
 
         size_t N = zip_get_num_entries(doc_archive, 0);
@@ -120,12 +121,12 @@ bool getDocumentBody(std::string& output, const std::string& filename)
         }
         catch(...)
         {
-            throw std::invalid_argument("Input file not a word document or corrupted");
+            throw invalid_argument("Input file not a word document or corrupted");
         }
 
         ss.str("");
-        std::function<void(const std::pair<std::string, pt::ptree>&)> recurse_branch;
-        recurse_branch = [&](const std::pair<std::string, pt::ptree>& node)
+        function<void(const pair<string, pt::ptree>&)> recurse_branch;
+        recurse_branch = [&](const pair<string, pt::ptree>& node)
         {
 
             if(node.first == "w:t")
@@ -192,7 +193,7 @@ bool getDocumentBody(std::string& output, const std::string& filename)
             {
 
                 output.replace(output.begin() + i, output.begin() + i + 1,
-                               std::to_string((int)output[i]));
+                               to_string((int)output[i]));
 
             }
             else ++i;
@@ -349,7 +350,7 @@ bool getDocumentBody(std::string& output, const std::string& filename)
 
         fclose(inFILE);
 
-        std::string str_begin = "stream",
+        string str_begin = "stream",
                     str_end = "endstream";
         unsigned int matchIndex = 0,
                      beginIdx = UINT_MAX,
@@ -576,7 +577,7 @@ bool getCMap(cMap& output, const char* str)
     if((beginCodex == UINT_MAX) || (endCodex == UINT_MAX)) return false;
 
     bool bBracket = false, bBeginLine = true;
-    std::string encodeBuf;
+    string encodeBuf;
     wchar_t mapC;
 
     for(size_t i = beginCodex + 12; i < endCodex; ++i)

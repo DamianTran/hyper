@@ -9,6 +9,7 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <sstream>
+#include <mutex>
 
 #include "hyper/network/webio.hpp"
 #include "hyper/toolkit/html.hpp"
@@ -156,6 +157,8 @@ protected:
 
 /** Wrapper for a basic console-based internet browser */
 int WebCrawlProgram(int argc = 0, char** argv = nullptr);
+
+static std::mutex spider_print_lock;
 
 }
 

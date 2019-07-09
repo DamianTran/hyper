@@ -32,14 +32,16 @@ namespace hyperC
 
 HTML_tree::HTML_tree(const char* str, const size_t& level):
     bNoContentType(false),
-    level(level)
+    level(level),
+    sub_level(0)
 {
     read_text(str);
 }
 
 HTML_tree::HTML_tree():
     bNoContentType(false),
-    level(0) { }
+    level(0),
+    sub_level(0) { }
 
 bool HTML_DOCUMENT_TYPE(const char* doc_ptr)
 {
@@ -80,9 +82,9 @@ bool HTML_DECL(const char* text_ptr)
 
 bool HTML_COMMENT(const char* text_ptr)
 {
-    if(ptr_at_string(text_ptr, "<!"))
+    if(ptr_at_string(text_ptr, "<!--"))
     {
-        text_ptr += 2;
+        text_ptr += 4;
         while(*text_ptr)
         {
             if(ptr_at_string(text_ptr, "-->")) return true;
@@ -90,6 +92,24 @@ bool HTML_COMMENT(const char* text_ptr)
         }
     }
     return false;
+}
+
+bool HTML_CONDITIONAL(const char* text_ptr)
+{
+
+    if(ptr_at_string(text_ptr, "<!--["))
+    {
+        text_ptr += 5;
+        while(*text_ptr)
+        {
+            if(ptr_at_string(text_ptr, "]-->"))
+            {
+                return true;
+            }
+            ++text_ptr;
+        }
+    }
+
 }
 
 bool HTML_NOCONTENT(const char* text_ptr)
@@ -153,7 +173,7 @@ string HTML_NAME(const char* text_ptr)
     {
         ++text_ptr;
         const char* c = text_ptr;
-        while(*text_ptr && (*text_ptr != ' ') && (*text_ptr != '>'))
+        while(*text_ptr && !isCharType(*text_ptr, " \n\r>"))
         {
             ++text_ptr;
         }
@@ -179,7 +199,7 @@ string HTML_ATTR(const char* text_ptr, const char* attribute_name)
         while(*text_ptr && isCharType(*text_ptr, " \t\r\n=")) ++ text_ptr;
 
         const char* c = text_ptr;
-        while(*text_ptr && (bQuote || (*text_ptr != ' ')) && (*text_ptr != '>'))
+        while(*text_ptr && (bQuote || !isCharType(*text_ptr, " \n\r")) && (*text_ptr != '>'))
         {
             if(!bQuote && isCharType(*text_ptr, "'\""))
             {
@@ -207,7 +227,7 @@ string HTML_CLASS(const char* text_ptr)
     if(HTML_BEGIN(text_ptr))
     {
         const char* c = ++text_ptr;
-        while(*text_ptr && (*text_ptr != ' ') && (*text_ptr != '>')) ++text_ptr;
+        while(*text_ptr && !isCharType(*text_ptr, " >\n\r")) ++text_ptr;
 
         output.assign(c, text_ptr);
         trim(output, "\t\r\n ");
@@ -294,6 +314,11 @@ string HTML_CLEAN_CONTENT(const char* text_ptr)
 string HTML_REMOVE_SYNTAX(const char* text_ptr)
 {
 
+    if(!text_ptr)
+    {
+        return string();
+    }
+
     string output(text_ptr);
 
     for(size_t i = 0, j; i < output.size();)
@@ -301,6 +326,12 @@ string HTML_REMOVE_SYNTAX(const char* text_ptr)
         if(HTML_BEGIN(&output[i]) || HTML_END(&output[i]))
         {
             j = i + HTML_FORWARD(&output[i]);
+
+            if(j > output.size())
+            {
+                j = output.size();
+            }
+
             output.erase(output.begin() + i, output.begin() + j);
         }
         else ++i;
@@ -492,20 +523,103 @@ bool HTML_tree::read_text(const char* text)
 
     bool bBracket = false;
     bool bNoContent = true;
+    bool bScript = false;
 
     string subBuf;
 
     unsigned int beginIdx = UINT_MAX;
-    unsigned int subIdx;
+    unsigned int subIdx = UINT_MAX;
     unsigned int level = 0;
 
     if(HTML_DECL(&text[i])) i += HTML_FORWARD(&text[i]);
 
     for(; i < L;)
     {
-        if(HTML_COMMENT(&text[i]))
+        if(ptr_at_string(&text[i], "<script", true))
         {
-            i += HTML_FORWARD(&text[i]);
+            i += 7;
+            if(i < L)
+            {
+                while(!ptr_at_string(&text[i], "</script>", true))
+                {
+                    ++i;
+                }
+                i += 9;
+            }
+
+            if(beginIdx < i)
+            {
+                beginIdx = i;
+            }
+        }
+        else if(ptr_at_string(&text[i], "<style", true))
+        {
+            i += 6;
+            if(i < L)
+            {
+                while(!ptr_at_string(&text[i], "</style>", true))
+                {
+                    ++i;
+                }
+                i += 8;
+            }
+
+            if(beginIdx < i)
+            {
+                beginIdx = i;
+            }
+        }
+        else if(ptr_at_string(&text[i], "<!--["))
+        {
+            i += 5;
+            if(i < L)
+            {
+                while(!ptr_at_string(&text[i], "]>"))
+                {
+                    ++i;
+                }
+                i += 2;
+            }
+
+            if(beginIdx < i)
+            {
+                beginIdx = i;
+            }
+        }
+        else if(ptr_at_string(&text[i], "<!["))
+        {
+            i += 3;
+            if(i < L)
+            {
+                while(!ptr_at_string(&text[i], "]-->") &&
+                      !ptr_at_string(&text[i], "]>"))
+                {
+                    ++i;
+                }
+                i += 3;
+            }
+
+            if(beginIdx < i)
+            {
+                beginIdx = i;
+            }
+        }
+        else if(ptr_at_string(&text[i], "<!--"))
+        {
+            i += 4;
+            if(i < L)
+            {
+                while(!ptr_at_string(&text[i], "-->"))
+                {
+                    ++i;
+                }
+                i += 3;
+            }
+
+            if(beginIdx < i)
+            {
+                beginIdx = i;
+            }
         }
         else if(HTML_NOCONTENT(&text[i]))
         {
@@ -554,6 +668,7 @@ bool HTML_tree::read_text(const char* text)
         }
         else if(HTML_BEGIN(&text[i]))
         {
+
             if(!level)
             {
                 beginIdx = i + HTML_FORWARD(&text[i]);
@@ -564,12 +679,15 @@ bool HTML_tree::read_text(const char* text)
             {
                 subIdx = i;
             }
+
             ++level;
             i += HTML_FORWARD(&text[i]);
         }
         else if(HTML_END(&text[i]))
         {
+
             --level;
+
             if(!level && (beginIdx != UINT_MAX) && (i != beginIdx))
             {
                 string newContent;
@@ -578,15 +696,22 @@ bool HTML_tree::read_text(const char* text)
                 content += newContent;
                 beginIdx = UINT_MAX;
             }
-            else if(level == 1)
+            else if((level == 1) && (subIdx != UINT_MAX))
             {
                 subBuf.assign(text + subIdx, text + i + HTML_FORWARD(&text[i]));
                 branches.emplace_back(subBuf.c_str(), this->level + 1);
             }
 
             i += HTML_FORWARD(&text[i]);
+
         }
         else ++i;
+    }
+
+    if((subIdx != UINT_MAX) && (level > 1))
+    {
+        subBuf.assign(text + subIdx, text + L);
+        branches.emplace_back(subBuf.c_str(), this->level + 1);
     }
 
     return true;
@@ -905,8 +1030,7 @@ bool HTML_tree::getTreeClasses(vector<HTML_tree>& output,
         }
         else match = true;
 
-match_found:
-        ;
+        match_found:;
 
         if(match)
         {
