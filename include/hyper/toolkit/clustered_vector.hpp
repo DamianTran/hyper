@@ -128,15 +128,15 @@ public:
         key(0),
         level(0){ }
 
-    tree_vector(key_t key,
-                const int& max_level = -1,
+    tree_vector(key_t& key,
+                const int& max_level = 1000,
                 const int& level = 0):
         key(key),
         level(level),
         max_level(max_level){ }
 
     tree_vector(container_t& values,
-                const int& max_level = -1,
+                const int& max_level = 1000,
                 const int& level = 0):
         key(0),
         level(level),
@@ -195,8 +195,9 @@ public:
         {
             addValue(value);
         }
-        else
+        else if(level != max_level)
         {
+
             try{
                 this->at(value[level]).add_tree(value);
             }
@@ -325,6 +326,30 @@ public:
                 if(item == val)
                 {
                     return item;
+                }
+            }
+        }
+        else
+        {
+            try{
+                return this->at(val[level]).get(val);
+            }catch(...){ }
+        }
+
+        throw std::invalid_argument("Value does not exist in tree");
+    }
+
+    template<typename search_t>
+    const value_type& get(const search_t& val) const
+    {
+        if((level == val.size()) ||
+           (level == max_level))
+        {
+            for(size_t i = 0; i < values().size(); ++i)
+            {
+                if(values()[i] == val)
+                {
+                    return values()[i];
                 }
             }
         }

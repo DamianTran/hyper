@@ -555,7 +555,6 @@ void _2Dstream::index(const int& max_levels)
 
         if(!coord_index.empty())
         {
-
             reference_vector<coord_string> refs(coord_index);
             search_index = new tree_vector<char, coord_string>(refs, max_levels);
 
@@ -765,65 +764,69 @@ void _2Dstream::update()
             c = readBuffer;
         }
 
-        if((*c == '\n') || (*c == '\r'))
+        if(*c == '\"')
         {
-
-            ++rowSizes.back();
-
-            indexSizes.back().push_back(i-lastIndexPos);
-            indexPos.back().push_back(lastIndexPos);
-            rowDataSizes.back() = i - lastRowIndex;
-
-            if(i < streamSize - 1)
+            bQuote = !bQuote;
+        }
+        else if(!bQuote)
+        {
+            if((*c == '\n') || (*c == '\r'))
             {
-                if((*c + 1) && ((*(c + 1) == '\r')))
+
+                ++rowSizes.back();
+
+                indexSizes.back().push_back(i-lastIndexPos);
+                indexPos.back().push_back(lastIndexPos);
+                rowDataSizes.back() = i - lastRowIndex;
+
+                if(i < streamSize - 1)
                 {
-                    lastIndexPos = i+2;
-                    lastRowIndex = i+2;
-                    ++i;
-                    ++c;
+                    if((*c + 1) && ((*(c + 1) == '\r')))
+                    {
+                        lastIndexPos = i+2;
+                        lastRowIndex = i+2;
+                        ++i;
+                        ++c;
+                    }
+                    if((*c + 1) && ((*(c + 1) == '\n')))
+                    {
+                        lastIndexPos = i+2;
+                        lastRowIndex = i+2;
+                        ++i;
+                        ++c;
+                    }
+                    else
+                    {
+                        lastIndexPos = i+1;
+                        lastRowIndex = i+1;
+                    }
                 }
-                if((*c + 1) && ((*(c + 1) == '\n')))
+
+                bNewLine = true;
+
+            }
+            else if(isCharType(*c, delim))
+            {
+
+                indexPos.back().push_back(lastIndexPos);
+                indexSizes.back().push_back(i-lastIndexPos);
+
+                ++rowSizes.back();
+
+                if(*(c + 1) && (*(c + 1) == '\r'))
                 {
                     lastIndexPos = i+2;
-                    lastRowIndex = i+2;
                     ++i;
                     ++c;
                 }
                 else
                 {
                     lastIndexPos = i+1;
-                    lastRowIndex = i+1;
                 }
             }
-
-            bNewLine = true;
-
         }
-        else if(*c == '\"')
-        {
-            bQuote = !bQuote;
-        }
-        else if(isCharType(*c, delim) && !bQuote)
-        {
 
-            indexPos.back().push_back(lastIndexPos);
-            indexSizes.back().push_back(i-lastIndexPos);
-
-            ++rowSizes.back();
-
-            if(*(c + 1) && (*(c + 1) == '\r'))
-            {
-                lastIndexPos = i+2;
-                ++i;
-                ++c;
-            }
-            else
-            {
-                lastIndexPos = i+1;
-            }
-        }
-        else if((i < streamSize - 1) && bNewLine)
+        if((i < streamSize - 1) && bNewLine)
         {
             ++numRows;
 
@@ -851,6 +854,11 @@ void _2Dstream::update()
         cout << "\r>> Updating: " << streamSize << "b / " <<
              streamSize << "b (100%)\n";
     }
+}
+
+unsigned int _2Dstream::maxRowSize() const noexcept
+{
+    return max(rowSizes);
 }
 
 size_t _2Dstream::getCharCount(const string& chars) const
@@ -919,6 +927,46 @@ inline void _2Dstream::get(const unsigned int& x, const unsigned int& y) const
 _1Dstream _2Dstream::getCol(const unsigned int& col) const
 {
     return _1Dstream(*this, col, false);
+}
+
+size_t _2Dstream::column_index(const string& header) const
+{
+
+    if(nrow() < 1)
+    {
+        throw out_of_range("_2Dstream::column_index(): requested on empty stream");
+    }
+
+    for(size_t i = 0; i < rowSize(0); ++i)
+    {
+        if(getString(i, 0) == header)
+        {
+            return i;
+        }
+    }
+
+    throw out_of_range("_2Dstream::column_index(): header \"" + header + "\" does not exist");
+
+}
+
+size_t _2Dstream::row_index(const string& row_name) const
+{
+
+    if(empty() || (ncol() < 1))
+    {
+        throw out_of_range("_2Dstream::row_index(): requested on empty stream");
+    }
+
+    for(size_t i = 0, L = nrow(); i < L; ++i)
+    {
+        if(getString(0, i) == row_name)
+        {
+            return i;
+        }
+    }
+
+    throw out_of_range("_2Dstream::row_index(): row_name \"" + row_name + "\" does not exist");
+
 }
 
 void _2Dstream::importCol(StringVector& storage, const unsigned int& col) const
@@ -1168,7 +1216,7 @@ bool _2Dstream::check(const string& target, const float& size_threshold,
 
                         strSize = getStrSize(match_c);
 
-                        if(strSize < maxStrSize)
+                        if(strSize <= maxStrSize)
                         {
 
                             return true;
@@ -1402,7 +1450,7 @@ bool _2Dstream::find(VectorPairU& output, const string& target, const float& siz
 
                         strSize = getStrSize(match_c);
 
-                        if(strSize < maxStrSize)
+                        if(strSize <= maxStrSize)
                         {
 
                             // Register the index of this find
@@ -1615,6 +1663,36 @@ Vector2u _2Dstream::getCoords(const string& target, const float& threshold)
     }
 
     return Vector2u(coords.x[outIndex], coords.y[outIndex]);
+}
+
+unsigned int _2Dstream::findRow(const string& query,
+                                const float& size_threshold)
+{
+
+    Vector2u best_coords = getCoords(query, size_threshold);
+
+    if(best_coords.y >= nrow())
+    {
+        throw std::out_of_range("_2Dstream::findRow(): query not found in stream");
+    }
+
+    return best_coords.y;
+
+}
+
+unsigned int _2Dstream::findCol(const string& query,
+                                const float& size_threshold)
+{
+
+    Vector2u best_coords = getCoords(query, size_threshold);
+
+    if(best_coords.x >= ncol())
+    {
+        throw std::out_of_range("_2Dstream::findCol(): query not found in stream");
+    }
+
+    return best_coords.x;
+
 }
 
 string _2Dstream::findMatch(const string& target, const float& threshold)

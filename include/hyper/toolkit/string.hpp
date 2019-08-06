@@ -404,6 +404,20 @@ void swap_chars(string_t& str,
 }
 
 template<typename string_t>
+void substitute(string_t& str,
+                const std::string& sequence,
+                const std::string& substitute)
+{
+    int pos = 0;
+    while((pos = str.find(sequence, pos)) < str.size())
+    {
+        str.replace(str.begin() + pos,
+                    str.begin() + pos + sequence.size(),
+                    substitute);
+    }
+}
+
+template<typename string_t>
 void single_spaces(string_t& str)
 {
     for(size_t i = 0, L = str.size(); i < L; ++i)
@@ -627,6 +641,12 @@ bool cmpStringToList(const std::vector<string_t1>& query,
 bool cmpStringIncludeList(const std::string& focus, const std::vector<std::string>& list,
                              const unsigned char& params = CMP_STR_DEFAULT,
                              const float& threshold = 0.6f);
+
+std::vector<std::string> getOverlappingStrings(const std::vector<std::string>& v1,
+                                               const std::vector<std::string>& v2,
+                                               const unsigned char& params = CMP_STR_DEFAULT,
+                                               const float& threshold = 0.6f);
+
 bool replace(std::string& str,
                 const std::string& sequence,
                 const std::string& replacement);

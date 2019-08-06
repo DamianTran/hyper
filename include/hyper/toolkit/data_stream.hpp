@@ -180,7 +180,7 @@ public:
     inline const bool& isOpen() const noexcept{ return bOpen; }
 
     void reload();
-    void index(const int& max_levels = -1);   // Create a search index to speed up repeated find operations
+    void index(const int& max_levels = 1000);   // Create a search index to speed up repeated find operations
 
     void update();
 
@@ -195,6 +195,7 @@ public:
 
     inline const unsigned int& rowSize(const unsigned int& row) const{ return rowSizes[row]; }
     inline const unsigned int& rowDataSize(const unsigned int& row) const{ return rowDataSizes[row]; }
+    unsigned int maxRowSize() const noexcept;
 
     size_t getCharCount(const std::string& chars) const;
 
@@ -216,6 +217,12 @@ public:
     _1Dstream getRow(const unsigned int& row) const;
     _1Dstream getCol(const unsigned int& col) const;
 
+    /** @brief Get the index of a column by string matching. */
+    size_t column_index(const std::string& header) const;
+
+    /** @brief Get the index of a row by string matching. */
+    size_t row_index(const std::string& row_name) const;
+
     void importRow(std::vector<std::string>& storage, const unsigned int& row) const;
     void importCol(std::vector<std::string>& storage, const unsigned int& col) const;
     void import();  // Load stream data into RAM and perform further operations on it
@@ -230,6 +237,9 @@ public:
     bool find(hyperC::VectorPairU& output, const std::string& target, const float& size_threshold = 0.1f,
               const float& match_threshold = 1.0f);
     Vector2u getCoords(const std::string& target, const float& threshold = 0.1f);
+    unsigned int findRow(const std::string& target, const float& size_threshold = 0.1f);
+    unsigned int findCol(const std::string& target, const float& size_threshold = 0.1f);
+
     bool check(const std::string& target,
                const float& threshold = 0.1f,
                const float& match_threshold = 1.0f) const;
@@ -237,7 +247,8 @@ public:
     unsigned int getCount(const std::string& query, bool exact = true, const float& threshold = 0.1f);
 
     void get(const unsigned int& x, const unsigned int& y) const; // Returns copied data - must delete pointer after every call
-    std::string getString(const unsigned int& x, const unsigned int& y) const;
+    std::string getString(const unsigned int& x,
+                          const unsigned int& y) const;
     template<typename T> std::string getString(const hyperC::Vector2<T>& coords) const{
         return getString((unsigned int)coords.x, (unsigned int)coords.y);
     }

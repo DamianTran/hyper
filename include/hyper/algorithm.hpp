@@ -2287,45 +2287,57 @@ T average(const std::vector<std::vector<T>>& V)
     return output/tSIZE;
 }
 
+template<typename T>
+bool nan_sort(const T& first, const T& second)
+{
+    if(isnan(first))
+    {
+        return false;
+    }
+    else if(isnan(second))
+    {
+        return true;
+    }
+    return second > first;
+}
+
 /** @brief Order the members of vector [V] in ascending or descending order.
   *
   * For efficiency, performs the ordering on the original vector. */
 template<typename T>
-void order(std::vector<T> &V, bool ascending = true)
+void order(std::vector<T>& V, const bool& ascending = true)
 {
-    size_t L = V.size();
-    if(L < 2) return;
-
-    T tmp;
     if(ascending)
     {
-        for(size_t i = 0; i < L-1; ++i)
-        {
-            for(size_t j = i+1; j < L; ++j)
-            {
-                if(V[j] < V[i])
-                {
-                    tmp = std::move(V[i]);
-                    V[i] = std::move(V[j]);
-                    V[j] = std::move(tmp);
-                }
-            }
-        }
+        std::sort(V.begin(), V.end());
     }
     else
     {
-        for(size_t i = 0; i < L-1; ++i)
-        {
-            for(size_t j = i+1; j < L; ++j)
-            {
-                if(V[j] > V[i])
-                {
-                    tmp = std::move(V[i]);
-                    V[i] = std::move(V[j]);
-                    V[j] = std::move(tmp);
-                }
-            }
-        }
+        std::sort(V.rbegin(), V.rend());
+    }
+}
+
+inline void order(std::vector<float>& V, const bool& ascending = true)
+{
+    if(ascending)
+    {
+        std::sort(V.begin(), V.end(), nan_sort<float>);
+    }
+    else
+    {
+        std::sort(V.rbegin(), V.rend(), nan_sort<float>);
+    }
+}
+
+inline void order(std::vector<double>& V, const bool& ascending = true)
+{
+    if(ascending)
+    {
+        std::sort(V.begin(), V.end(), nan_sort<double>);
+    }
+    else
+    {
+        std::sort(V.rbegin(), V.rend(), nan_sort<double>);
     }
 }
 
@@ -3032,46 +3044,213 @@ T stdev(const std::vector<std::vector<T>>& V)
     return sqrt(output/tSIZE);
 }
 
+template<typename T>
+struct index_ref
+{
+
+    index_ref(const T& item,
+              const size_t& index):
+                     item(&item),
+                     index(index){ }
+
+    const T* item;
+    size_t index;
+
+    inline bool operator>(const index_ref& other) const
+    {
+        return *item > *other.item;
+    }
+    inline bool operator<(const index_ref& other) const
+    {
+        return *item < *other.item;
+    }
+    inline bool operator>=(const index_ref& other) const
+    {
+        return !(*this < other);
+    }
+    inline bool operator<=(const index_ref& other) const
+    {
+        return !(*this > other);
+    }
+    inline bool operator==(const index_ref& other) const
+    {
+        return *item == *other.item;
+    }
+};
+
+template<typename T>
+bool nan_idx_sort(const index_ref<T>& first,
+                  const index_ref<T>& second)
+{
+
+    if(isnan(*first.item))
+    {
+        return false;
+    }
+    else if(isnan(*second.item))
+    {
+        return true;
+    }
+    else
+    {
+        return second > first;
+    }
+
+}
+
 /** @brief Obtain a vector analogous to vector[V] containing the order rank of each element.
   *
   * @param V    The vector of values to obtain order ranks for.
   * @param ascending    TRUE to order from least to greatest, FALSE for the converse.
   */
 template<typename T>
-std::vector<unsigned int> orderedIndex(std::vector<T> V, bool ascending = true)
+std::vector<unsigned int> orderedIndex(const std::vector<T>& V,
+                                       const bool& ascending = true)
 {
-    size_t L = V.size();
-    size_t MI = UINT_MAX;
 
-    std::vector<unsigned int> output;
-    output.reserve(L);
+    if(V.empty())
+    {
+        return std::vector<unsigned int>();
+    }
+    else if(V.size() == 1)
+    {
+        return std::vector<unsigned int>(1, 0);
+    }
+
+    unsigned int L = V.size();
+    size_t i;
+
+    std::vector<index_ref<T>> i_refs;
+    std::vector<unsigned int> idx(L);
+
+    i_refs.reserve(L);
+
+    for(i = 0; i < L; ++i)
+    {
+        i_refs.emplace_back(V[i], i);
+    }
 
     if(ascending)
     {
-
-        for(size_t i = 0; i < L; ++i)
-        {
-            MI = minIndex(V);
-            if((MI == UINT_MAX) || isnan(V[MI])) continue;
-            output.emplace_back(MI);
-            V[MI] = std::numeric_limits<T>::max();
-        }
-
+        std::sort(i_refs.begin(), i_refs.end());
     }
     else
     {
-
-        for(size_t i = 0; i < L; ++i)
-        {
-            MI = maxIndex(V);
-            if((MI == UINT_MAX) || isnan(V[MI])) continue;
-            output.emplace_back(MI);
-            V[MI] = std::numeric_limits<T>::min();
-        }
-
+        std::sort(i_refs.rbegin(), i_refs.rend());
     }
 
-    return output;
+    for(i = 0; i < L; ++i)
+    {
+        idx[i] = i_refs[i].index;
+    }
+
+    return idx;
+}
+
+inline std::vector<unsigned int> orderedIndex(const std::vector<float>& V,
+                                              const bool& ascending = true)
+{
+
+    if(V.empty())
+    {
+        return std::vector<unsigned int>();
+    }
+    else if(V.size() == 1)
+    {
+        return std::vector<unsigned int>(1, 0);
+    }
+
+    unsigned int L = V.size();
+    size_t i;
+
+    std::vector<index_ref<float>> i_refs;
+    std::vector<unsigned int> idx(L);
+
+    i_refs.reserve(L);
+
+    for(i = 0; i < L; ++i)
+    {
+        i_refs.emplace_back(V[i], i);
+    }
+
+    if(ascending)
+    {
+        std::sort(i_refs.begin(), i_refs.end(), nan_idx_sort<float>);
+    }
+    else
+    {
+        std::sort(i_refs.rbegin(), i_refs.rend(), nan_idx_sort<float>);
+    }
+
+    for(i = 0; i < L; ++i)
+    {
+        idx[i] = i_refs[i].index;
+    }
+
+    for(i = 0; i < L;)
+    {
+        if(isnan(V[idx[i]]))
+        {
+            idx.erase(idx.begin() + i);
+            --L;
+        }
+        else ++i;
+    }
+
+    return idx;
+}
+
+inline std::vector<unsigned int> orderedIndex(const std::vector<double>& V,
+                                              const bool& ascending = true)
+{
+
+    if(V.empty())
+    {
+        return std::vector<unsigned int>();
+    }
+    else if(V.size() == 1)
+    {
+        return std::vector<unsigned int>(1, 0);
+    }
+
+    unsigned int L = V.size();
+    size_t i;
+
+    std::vector<index_ref<double>> i_refs;
+    std::vector<unsigned int> idx(L);
+
+    i_refs.reserve(L);
+
+    for(i = 0; i < L; ++i)
+    {
+        i_refs.emplace_back(V[i], i);
+    }
+
+    if(ascending)
+    {
+        std::sort(i_refs.begin(), i_refs.end(), nan_idx_sort<double>);
+    }
+    else
+    {
+        std::sort(i_refs.rbegin(), i_refs.rend(), nan_idx_sort<double>);
+    }
+
+    for(i = 0; i < L; ++i)
+    {
+        idx[i] = i_refs[i].index;
+    }
+
+    for(i = 0; i < L;)
+    {
+        if(isnan(V[idx[i]]))
+        {
+            idx.erase(idx.begin() + i);
+            --L;
+        }
+        else ++i;
+    }
+
+    return idx;
 }
 
 /** @brief Obtain a vector containing only the unique values in vector [V]. */
@@ -3960,19 +4139,41 @@ inline long double hypergeometric_probability(const int& a, const int& b, const 
                     logFactorial(d)));
 }
 
+/** @brief Calculate the Fisher exact P-value for a 2x2 contingency table.
+  *
+  * Applies the hypergeometric probability to all possible contingency tables
+  * to test the hypothesis that the provided table deviates from the possible
+  * tables beyond chance.
+  *
+  * @param O    Number of observed positives.
+  * @param OT   Total number of positives.
+  * @param N    Sample population size.
+  * @param T    Background population size.
+  * @param bonferroni_correct Apply the bonferroni correction to the
+  * resulting p-value.
+  */
 inline long double fisher_exact_P(const int& O, int OT, int N, int T,
                                   const bool& bonferroni_correct = false)
 {
 
+    // Total number of possible tables
     int total = T;
 
+    // Get total number of negatives
     T -= N;
+
+    // Get number of sample negatives
     OT -= O;
+
+    // Get number of positives in the background
     N -= O;
+
+    // Get number of negatives in the background
     T -= OT;
 
-    long double p_cutoff = hypergeometric_probability(O, OT, N, T),
-                p_value = 0.0L;
+    // Assess the significance cutoff via hypergeometric distribution
+    long double p_cutoff = hypergeometric_probability(O, OT, N, T);
+    long double p_value = 0.0L;
 
     for(int i = 0; i <= total; ++i)
     {

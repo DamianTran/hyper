@@ -438,13 +438,13 @@ unsigned int getStrSize(char* c)
 {
     unsigned int output = 0;
     char* newC = c;
-    while((*newC != '\t') && (*newC != '\n') && (*newC != '\0'))
+    while(!isCharType(*newC, "\t\n\r\0"))
     {
         ++output;
         ++newC;
     }
     newC = c-1;
-    while((*newC != '\t') && (*newC != '\n') && (*newC != '\0'))
+    while(!isCharType(*newC, "\t\n\r\0"))
     {
         ++output;
         --newC;
@@ -1284,6 +1284,27 @@ bool cmpStringIncludeList(const string& focus,
         if(!cmpString(focus, str, params)) return false;
     }
     return true;
+}
+
+vector<string> getOverlappingStrings(const vector<string>& v1,
+                                     const vector<string>& v2,
+                                     const unsigned char& params,
+                                     const float& threshold)
+{
+
+    vector<string> output;
+
+    for(auto& str : v1)
+    {
+        if(!anyEqual(str, output) &&
+           cmpStringToList(str, v2, params, threshold))
+        {
+            output.emplace_back(str);
+        }
+    }
+
+    return output;
+
 }
 
 bool replace(string& str,
