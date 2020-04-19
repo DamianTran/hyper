@@ -1,6 +1,6 @@
 # Hyper C++ (aka EZC or easyC)
 
-## An assortment of algorithms that'll get you hyper about C++
+## An assortment of algorithms for a faster C++ experience
 
 The only overarching theme to this library is speed.  Try out some new algorithms such as the spreadsheet stream, the STL-style reference vector, the spider web crawler, and the hierarchical search tree.  Most of these can be implemented in a few lines or less.
 
